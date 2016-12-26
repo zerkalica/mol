@@ -4,6 +4,10 @@
 	border-radius: var(--mol_skin_round);
 }
 
+[mol_barer] > * {
+	margin: 0;
+}
+
 [mol_barer] > *:first-child {
 	border-radius: var(--mol_skin_round) 0 0 var(--mol_skin_round);
 }
@@ -18,8 +22,4 @@
 
 [mol_barer] > *:last-child {
 	border-radius: 0 var(--mol_skin_round) var(--mol_skin_round) 0;
-}
-
-[mol_barer] > * {
-	margin: 0;
 }
