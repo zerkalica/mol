@@ -1,6 +1,6 @@
 [mol_floater] {
 	position: relative;
-	z-index: 1;
+	z-index: 3;
 	opacity: 1;
 	transition: opacity ease-out .1s .1s;
 }
@@ -9,4 +9,3 @@
 	opacity: 0;
 	transition: none;
 }
-
