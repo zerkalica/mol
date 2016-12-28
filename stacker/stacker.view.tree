@@ -1,7 +1,6 @@
 $mol_stacker $mol_viewer
-	breakpoint < breakPoint 1300
 	attr *
-		mol_stacker_side < collapse false
+		mol_stacker_side < side false
 	childs /
 		< mainer $mol_viewer
 			childs < main /

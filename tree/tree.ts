@@ -1,14 +1,14 @@
 namespace $ {
-	
+
 	export class $mol_tree {
-		
+
 		type : string
 		data : string
 		childs : $mol_tree[]
 		baseUri : string
 		row : number
 		col : number
-		
+
 		constructor(
 			config : {
 				type? : string
@@ -38,7 +38,7 @@ namespace $ {
 			this.row = config.row || 0
 			this.col = config.col || 0
 		}
-		
+
 		static values( str : string , baseUri? : string ) {
 			return str.split( '\n' ).map(
 				( data , index ) => new $mol_tree(
@@ -50,7 +50,7 @@ namespace $ {
 				)
 			)
 		}
-		
+
 		clone(
 			config : {
 				type? : string
@@ -74,33 +74,33 @@ namespace $ {
 				}
 			)
 		}
-		
+
 		static fromString( str : string , baseUri? : string ) {
-			
+
 			var root = new $mol_tree( { baseUri : baseUri } )
 			var stack = [ root ]
-			
+
 			var row = 0
 			var lines = String( str ).split( /\n/ )
 			lines.forEach(
 				line => {
 					++row
-					
+
 					var chunks = /^(\t*)((?:[^\n\t\\ ]+ *)*)(\\[^\n]*)?/.exec( line )
 					if( !chunks ) new Error( `Syntax error at ${baseUri}#${row}\n${line}` )
-					
+
 					var indent = chunks[ 1 ]
 					var path = chunks[ 2 ]
 					var data = chunks[ 3 ]
-					
+
 					var deep = indent.length
 					var types = path ? path.split( / +/ ) : []
-					
+
 					if( stack.length < deep ) throw new Error( `Too many tabs at ${baseUri}#${row}\n${line}` )
-					
+
 					stack.length = deep + 1
 					var parent = stack[ deep ];
-					
+
 					types.forEach(
 						type => {
 							if( !type ) return
@@ -115,7 +115,7 @@ namespace $ {
 							parent = next
 						}
 					)
-					
+
 					if( data ) {
 						var next = new $mol_tree(
 							{
@@ -127,15 +127,15 @@ namespace $ {
 						parent.childs.push( next )
 						parent = next
 					}
-					
+
 					stack.push( parent )
-					
+
 				}
 			)
-			
+
 			return root
 		}
-		
+
 		static fromJSON( json : any , baseUri = '' ) : $mol_tree {
 			var type = $jin_type( json )
 			switch( type ) {
@@ -210,14 +210,14 @@ namespace $ {
 			}
 			throw new Error( `Unsupported type (${type}) at ${baseUri}` )
 		}
-		
+
 		get uri() {
 			return this.baseUri + '#' + this.row + ':' + this.col
 		}
-		
+
 		toString( prefix = '' ) : string {
 			var output = ''
-			
+
 			if( this.type.length ) {
 				if( !prefix.length ) {
 					prefix = "\t";
@@ -236,16 +236,16 @@ namespace $ {
 			}
 			return output
 		}
-		
+
 		toJSON() : any {
 			if( !this.type ) return this.value
-			
+
 			if( this.type === '//' ) return undefined
-			
+
 			if( this.type === 'true' ) return true
 			if( this.type === 'false' ) return false
 			if( this.type === 'null' ) return null
-			
+
 			if( this.type === 'dict' ) {
 				var obj = {}
 				for( var child of this.childs ) {
@@ -258,7 +258,7 @@ namespace $ {
 				}
 				return obj
 			}
-			
+
 			if( this.type === 'list' ) {
 				var res : any[] = []
 				this.childs.forEach(
@@ -269,16 +269,16 @@ namespace $ {
 				)
 				return res
 			}
-			
+
 			if( this.type === 'time' ) {
 				return new Date( this.value )
 			}
-			
+
 			if( String( Number( this.type ) ) == this.type.trim() ) return Number( this.type )
-			
+
 			throw new Error( `Unknown type (${this.type}) at ${this.uri}` )
 		}
-		
+
 		get value() {
 			var values : string[] = []
 			for( var child of this.childs ) {
@@ -287,10 +287,10 @@ namespace $ {
 			}
 			return this.data + values.join( "\n" )
 		}
-		
+
 		select( ...path : string[] ) {
 			if( typeof path === 'string' ) path = (<string>path).split( / +/ )
-			
+
 			var next = [ <$mol_tree>this ]
 			for( var type of path ) {
 				if( !next.length ) break
@@ -306,15 +306,15 @@ namespace $ {
 			}
 			return new $mol_tree( { childs : next } )
 		}
-		
+
 		filter( path : string[] , value? : string ) {
 			if( typeof path === 'string' ) path = (<string>path).split( / +/ )
-			
+
 			var childs = this.childs.filter(
 				function( item ) {
-					
+
 					var found = item.select( ...path )
-					
+
 					if( value == null ) {
 						return Boolean( found.childs.length )
 					} else {
@@ -322,10 +322,10 @@ namespace $ {
 					}
 				}
 			)
-			
+
 			return new $mol_tree( { childs : childs } )
 		}
-		
+
 	}
-	
+
 }
