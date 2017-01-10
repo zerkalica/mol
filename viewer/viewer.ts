@@ -221,6 +221,13 @@ namespace $ {
 		
 		@ $mol_mem()
 		DOMTree() {
+			let currentTime = Date.now();
+			
+			if(currentTime - startRenderTime > 32) {
+				renderCounter.value();
+				throw new $mol_atom_wait('defered_rendering');
+			}
+			
 			let node = this.DOMNode()
 			
 			try {
