@@ -11,6 +11,8 @@ namespace $ {
 	
 	export class $mol_atom< Value > extends $mol_object {
 		
+		static syncStartTime = 0
+		
 		masters : $mol_set< $mol_atom<any> > = null
 		slaves : $mol_set< $mol_atom<any> > = null
 		
@@ -134,8 +136,19 @@ namespace $ {
 		
 		pull( force? : $mol_atom_force ) {
 			try {
+				if( (Date.now() - $mol_atom.syncStartTime) > 32 ) {
+					throw new $mol_atom_defer();
+				}
 				return this.handler( this._next , force )
 			} catch( error ) {
+				if( error instanceof $mol_atom_defer ) {
+					this.status = $mol_atom_status.obsolete
+					if(!this.slaves) {
+						$mol_atom.syncStartTime = NaN
+						$mol_atom.actualize(this);
+					}
+					throw error;
+				}
 				if( error[ '$mol_atom_catched' ] ) return error
 				if( error instanceof $mol_atom_wait ) return error
 				
@@ -319,6 +332,7 @@ namespace $ {
 		}
 		
 		static sync() {
+			this.syncStartTime = Date.now();
 			$mol_log( '$mol_atom.sync' , [] )
 			this.schedule()
 			
@@ -356,6 +370,18 @@ namespace $ {
 		}
 	}
 	
+	export class $mol_atom_defer extends Error {
+		name = '$mol_atom_defer'
+		
+		constructor( public message = 'Defer...' ) {
+			super( message )
+			const error : any = new Error( message )
+			error.name = this.name
+			error['__proto__'] = $mol_atom_defer.prototype
+			return error
+		}
+	}
+	
 	export class $mol_atom_force extends Object {
 		$mol_atom_force : boolean
 		static $mol_atom_force : boolean
@@ -371,6 +397,8 @@ namespace $ {
 				try {
 					handler()
 				} catch( error ) {
+					if( error instanceof $mol_atom_defer )
+						throw error
 					if(!( error instanceof $mol_atom_wait )) atom.destroyed( true )
 					throw error
 				}
