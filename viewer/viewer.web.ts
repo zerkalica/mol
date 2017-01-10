@@ -3,15 +3,6 @@ interface Window {
 }
 
 namespace $ {
-	
-	export let startRenderTime : number;
-	
-	export let renderCounter = new $mol_atom('renderCounter', (next? : number) => {
-		let defer = requestAnimationFrame(() => {
-			renderCounter.value(renderCounter.value() + 1);
-		});
-		return next || 0;
-	});
 
 	/// Autoattach view roots to loaded DOM.
 	document.addEventListener( window.cordova ? 'deviceready' : 'DOMContentLoaded' , event => {
@@ -22,7 +13,7 @@ namespace $ {
 			let view = (<any>$)[ nodes.item( i ).getAttribute( 'mol_viewer_root' ) ].root( i )
 			view.DOMNode( nodes.item( i ) )
 			let win = new $mol_atom( `$mol_viewer.root(${ i })` , () => {
-				startRenderTime = Date.now();
+				$mol_viewer_startRenderTime = Date.now();
 				view.DOMTree()
 				document.title = view.title()
 				return null

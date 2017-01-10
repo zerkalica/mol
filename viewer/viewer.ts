@@ -1,5 +1,14 @@
 namespace $ {
 	
+	export let $mol_viewer_startRenderTime : number;
+	
+	export let $mol_viewer_renderCounter = new $mol_atom('$mol_viewer_renderCounter', (next? : number) => {
+		let defer = requestAnimationFrame(() => {
+			$mol_viewer_renderCounter.value($mol_viewer_renderCounter.value() + 1);
+		});
+		return next || 0;
+	});
+	
 	export let $mol_viewer_context = <$mol_viewer_context> {}
 	
 	export interface $mol_viewer_context {
@@ -223,8 +232,8 @@ namespace $ {
 		DOMTree() {
 			let currentTime = Date.now();
 			
-			if(currentTime - startRenderTime > 32) {
-				renderCounter.value();
+			if(currentTime - $mol_viewer_startRenderTime > 32) {
+				$mol_viewer_renderCounter.value();
 				throw new $mol_atom_wait('defered_rendering');
 			}
 			
