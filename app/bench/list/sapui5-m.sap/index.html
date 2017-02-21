@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv='Content-Type' content='text/html;charset=UTF-8' />
+
+    <title>SAPUI5 - sap.m</title>
+
+    <script src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js" data-sap-ui-libs="sap.m" data-sap-ui-xx-bindingSyntax="complex"></script>
+    <!-- load the mobile lib "sap.m", the layout lib and the "sap_bluecrystal" theme -->
+    <style>
+        .sapMTitle {
+            margin: 10px;
+            float: left;
+            font-size: 20px;
+        }
+        
+        .sapMListUl {
+            padding: 0;
+        }
+        
+        .sapMListUl li {
+            height: auto;
+            margin-top: 10px;
+        }
+        
+        .sapMList {
+            margin-top: 40px;
+        }
+        
+        .sapMSLIDescription {
+            white-space: normal;
+        }
+
+    </style>
+
+
+
+    <script type="text/javascript">
+//        if (window.parent === window) document.location = 'http://eigenmethod.github.io/mol/app/bench/#bench=' + encodeURIComponent(location.href)
+
+        var isRendered = false;
+
+
+        window.addEventListener( 'message' , function onMessage( event ) {
+        switch( event.data[ 0 ] ) {
+        	case 'set data' :
+        		model.setData( event.data[1] );
+        		break
+        	}
+        } )
+
+
+//        var data = {
+//            items: [{
+//                title: "1",
+//                content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis inventore distinctio possimus sed enim, dolore consectetur quaerat rem reprehenderit est nam hic, optio perspiciatis soluta explicabo, architecto in voluptas corporis."
+//            }, {
+//                title: "2",
+//                content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis inventore distinctio possimus sed enim, dolore consectetur quaerat rem reprehenderit est nam hic, optio perspiciatis soluta explicabo."
+//            }, {
+//                title: "3",
+//                content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis inventore distinctio possimus sed enim, dolore consectetur quaerat, optio perspiciatis soluta explicabo, architecto in voluptas corporis."
+//            }, {
+//                title: "4",
+//                content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis inventore distinctio possimus sed enim."
+//            }, {
+//                title: "5",
+//                content: "Lorem ipsum dolor sit amet."
+//            }]
+//        };
+
+        var oModel = new sap.ui.model.json.JSONModel();
+        
+       // oModel.setData(data);
+        oModel.setData({
+          sample : '',
+          items ; []
+        });
+
+        var list = new sap.m.List({});
+        list.bindItems({
+            path: "/items",
+            template: new sap.m.StandardListItem({
+                key: "{id}",
+                title: "{title}",
+                description: "{content}"
+            })
+        });
+
+        var page1 = new sap.m.Page({
+            title: "SAPUI5 on sap.m",
+            content: list
+        });
+
+        var app = new sap.m.App({
+            pages: [page1]
+        }).placeAt("content");
+
+        app.setModel(oModel);
+
+    </script>
+</head>
+
+<body id="content" class="sapUiBody">
+</body>
+
+</html>
