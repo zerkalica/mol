@@ -10,6 +10,8 @@
 	box-sizing: border-box;
 	@apply --mol_skin_outline;
 	overflow: hidden;
+	box-shadow: 0 0 0 0px rgba(230, 230, 230, .75);;
+
 }
 
 [mol_page_head] {
