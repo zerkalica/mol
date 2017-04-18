@@ -3,7 +3,7 @@
 }
 
 [mol_app_demo_menu] {
-	flex: 1 1 200px;
+	flex: 1 1 320px;
 }
 
 [mol_app_demo_detail], 
@@ -100,3 +100,23 @@
 [mol_app_demo_sample_large] {
 	box-sizing: border-box;
 }
+
+[mol_app_demo_page_go_to_git]{
+	color: #fff;
+	padding: 1rem;
+}
+[mol_app_demo_nav_row]{
+
+}
+[mol_grid_row]{
+	height: 500px;
+}
+[mol_app_demo_nav_option]{
+	font-size: 18px;
+	padding-left: 15px;
+	text-transform: capitalize;
+}
+[mol_link]{
+	border-radius: 0px;
+}
+
