@@ -4,6 +4,7 @@
 
 [mol_app_demo_menu] {
 	flex: 1 1 200px;
+	z-index: 2;
 }
 
 [mol_app_demo_detail], 
@@ -27,9 +28,6 @@
 	padding: 0;
 }
 
-[mol_page_search_line]{
-	border-right: 1px solid #E5E5E5;
-}
 
 [mol_search_suggest_filter_string]{
 	padding-left: 1rem;
