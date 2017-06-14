@@ -64,9 +64,9 @@ namespace $ {
 		}
 		
 		get( force? : $mol_atom_force ) {
-			if( this.status === $mol_atom_status.pulling ) {
-				throw new Error( `Cyclic atom dependency of ${ this }` )
-			}
+			// if( this.status === $mol_atom_status.pulling ) {
+			// 	throw new Error( `Cyclic atom dependency of ${ this }` )
+			// }
 			
 			this.actualize( force )
 			
@@ -94,6 +94,8 @@ namespace $ {
 			const slave = $mol_atom.stack[0]
 			$mol_atom.stack[0] = this
 			
+			try {
+			
 			if( !force && this.status === $mol_atom_status.checking ) {
 				
 				this.masters.forEach(
@@ -115,7 +117,7 @@ namespace $ {
 				
 				if( oldMasters ) oldMasters.forEach(
 					master => {
-						master.dislead( this )
+						//master.dislead( this )
 					}
 				)
 				
@@ -125,14 +127,30 @@ namespace $ {
 				this.push( next )
 				
 			}
-			
-			$mol_atom.stack[0] = slave
+			} catch( error ){
+				if( error instanceof $mol_atom_defer ) {
+					if(!this.slaves) {
+						$mol_atom.syncStartTime = NaN
+						setTimeout( ()=>requestAnimationFrame( ()=> $mol_atom.actualize(this) ),16)
+					}
+					throw error;
+				}
+			} finally {
+				$mol_atom.stack[0] = slave
+			}
 		}
 		
 		pull( force? : $mol_atom_force ) {
+			if( (Date.now() - $mol_atom.syncStartTime) > 15 ) {
+				throw new $mol_atom_defer();
+			}
 			try {
 				return this.handler( this._next , force )
 			} catch( error ) {
+				if( error instanceof $mol_atom_defer ) {
+					throw error;
+				}
+				
 				if( error[ '$mol_atom_catched' ] ) return error
 				if( error instanceof $mol_atom_wait ) return error
 				
@@ -302,6 +320,7 @@ namespace $ {
 			}
 		}
 		
+		static syncStartTime = NaN
 		static stack = [ null ] as $mol_atom<any>[]
 		static updating : $mol_atom<any>[] = []
 		static reaping = new $mol_set< $mol_atom<any> >()
@@ -337,6 +356,7 @@ namespace $ {
 		
 		static sync() {
 			$mol_log( '$mol_atom.sync' , [] )
+			this.syncStartTime = Date.now();
 			this.schedule()
 			
 			while( this.updating.length ) {
@@ -355,6 +375,7 @@ namespace $ {
 			}
 			
 			this.scheduled = false
+			this.syncStartTime = NaN;
 		}
 		
 		then< Next >( done : ( prev? : Value )=> Next , fail? : ( error : Error )=> Next ) {
@@ -384,6 +405,8 @@ namespace $ {
 						return next
 
 					} catch( error ) {
+						
+						if( error instanceof $mol_atom_defer ) throw error
 						
 						if( error instanceof $mol_atom_wait ) return error
 						
@@ -420,6 +443,19 @@ namespace $ {
 		}
 	}
 	
+	export class $mol_atom_defer extends Error {
+		name = '$mol_atom_defer'
+		
+		constructor( public message = 'Defer...' ) {
+			super( message )
+			const error : any = new Error( message )
+			error.name = this.name
+			error['__proto__'] = $mol_atom_defer.prototype
+			return error
+		}
+	}
+	
+
 	export class $mol_atom_force extends Object {
 		$mol_atom_force : boolean
 		static $mol_atom_force : boolean

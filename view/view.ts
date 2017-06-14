@@ -153,14 +153,18 @@ namespace $ {
 				}
 				
 				$mol_dom_render_attributes( node , this.attr() )
+				$mol_dom_render_styles( node , this.style() )
 				
 				const sub = this.sub_visible()
 				if( sub ) $mol_dom_render_children( node , sub )
 				
-				$mol_dom_render_styles( node , this.style() )
 				$mol_dom_render_fields( node , this.field() )
 				
 			} catch( error ) {
+				
+				if( error instanceof $mol_atom_defer ) {
+					throw error;
+				}
 				
 				$mol_dom_render_attributes( node , { mol_view_error : error.name } )
 				
