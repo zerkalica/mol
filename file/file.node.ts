@@ -4,9 +4,9 @@ namespace $ {
 		
 		@ $mol_mem_key()
 		static absolute( path : string ) {
-			const next = new $mol_file()
-			next.path = ()=> path
-			return next
+			return $mol_file.make({
+				path : $mol_const( path )
+			})
 		}
 		
 		static relative( path : string ) : $mol_file {
@@ -23,10 +23,10 @@ namespace $ {
 				this.path() ,
 				{ persistent : false } ,
 				( type : string , name : string )=> {
-					if( !name ) this.stat( void null , $mol_atom_force )
+					if( !name ) this.stat( undefined , $mol_atom_force )
 					else if( !/(^\.|___$)/.test( name ) ) {
 						var file = this.resolve( name )
-						file.stat( void null , $mol_atom_force )
+						file.stat( undefined , $mol_atom_force )
 					}
 				}
 			)
@@ -75,7 +75,7 @@ namespace $ {
 					$node.fs.unlinkSync( this.path() )
 				}
 				
-				this.stat( void null , $mol_atom_force )
+				this.stat( undefined , $mol_atom_force )
 				
 				return next
 			}
@@ -110,7 +110,7 @@ namespace $ {
 		
 		ext() {
 			var match = /((?:\.\w+)+)$/.exec( this.path() )
-			return match && match[ 1 ].substring( 1 )
+			return match ? match[ 1 ].substring( 1 ) : ''
 		}
 		
 		@ $mol_mem()

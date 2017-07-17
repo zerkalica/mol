@@ -7,11 +7,12 @@ Reactive micro-modular ui framework. Very simple, but very powerful!
 - [Features](#features)
 - [Demo applications](#demo-applications)
 - [Benchmarks](#benchmarks)
-- [Oganizations using $mol](#oganizations-using-mol)
+- [Oganizations using $mol](#organizations-using-mol)
 - [Articles](#articles)
-- [Any questions?](#any-questions)
-- [Found a bug?](#found-a-bug)
-- [Need feature?](#need-feature)
+- [Any questions?](https://github.com/eigenmethod/mol/issues/new?labels=question) / [All answers](https://github.com/eigenmethod/mol/issues?q=label%3Aquestion+is%3Aclosed)
+- [Found a bug?](https://github.com/eigenmethod/mol/issues/new?labels=bug) / [All bugs](https://github.com/eigenmethod/mol/labels/bug)
+- [Need a feature?](https://github.com/eigenmethod/mol/issues/new?labels=improvement) / [Vote for other](https://github.com/eigenmethod/mol/labels/improvement)
+- **Discussions: [Telegram](https://t.me/joinchat/AAAAAEPh3ssTZZjjYRzOwA), [Slack](http://mam-mol.slack.com), [E-mail](mailto:jin+mol@hyoo.ru)**
 - [Quick start](#quick-start)
 - [Rationale](#rationale)
 - [Modules](#modules)
@@ -56,9 +57,9 @@ Reactive micro-modular ui framework. Very simple, but very powerful!
 * [WebPageTest - Loading progress of ToDOMVC applications on some frameworks](https://www.webpagetest.org/video/compare.php?tests=161217_V8_6RFK%2C161217_G9_6RFM%2C161217_YZ_6RFN%2C161217_DM_6RFP%2C161217_2B_6RFQ%2C161217_RJ_6RFR%2C161217_2R_6RFS%2C161217_H5_6RFT%2C161217_CW_6RFV&thumbSize=150&ival=100&end=all)
 * [Line charts comparison](app/bench/chart/rope) ([online](http://eigenmethod.github.io/mol/app/bench/#bench=chart%2Frope%2F/sort=fill/sample=hcharts~mol))
 * [Bar charts comparison](app/bench/chart/bar) ([online](http://eigenmethod.github.io/mol/app/bench/#bench=chart%2Fbar%2F/sort=fill/sample=hcharts~mol))
-* [React vs React Fiber vs $mol](https://github.com/nin-jin/react-fiber-vs-stack-demo) ([online](https://nin-jin.github.io/react-fiber-vs-stack-demo/))
+* [React vs React Fiber vs $mol](https://github.com/nin-jin/sierpinski) ([online](https://nin-jin.github.io/sierpinski))
 
-# Oganizations using $mol
+# Organizations using $mol
 
 [![SAPRUN](http://www.saprun.com/static/core/img/base/logo_sm.png)](http://www.saprun.com)
 
@@ -69,24 +70,9 @@ Reactive micro-modular ui framework. Very simple, but very powerful!
 * [Идеальный UI фреймворк](https://habrahabr.ru/post/276747/) - Problems of popular frameworks
 * [Принципы написания кода](https://habrahabr.ru/post/236785/) - Code style principles
 
-# Any questions?
-
-* [Ask us](https://github.com/eigenmethod/mol/issues/new?labels=question)
-* [All answers](https://github.com/eigenmethod/mol/issues?q=label%3Aquestion+is%3Aclosed)
-
-# Found a bug?
-
-* [Report it](https://github.com/eigenmethod/mol/issues/new?labels=bug)
-* [All bugs](https://github.com/eigenmethod/mol/labels/bug)
-
-# Need feature?
-
-* [Suggest it](https://github.com/eigenmethod/mol/issues/new?labels=improvement)
-* [Vote for other](https://github.com/eigenmethod/mol/labels/improvement)
-
 # Quick start
 
-[Video of this precess](https://www.youtube.com/watch?v=PyK3if5sgN0)
+[Video of this process](https://www.youtube.com/watch?v=PyK3if5sgN0)
 
 **Create MAM project**
 
@@ -176,10 +162,10 @@ namespace $ { export class $my_hello extends $mol_view {
 	/// 	value?val <=> name?val
 	@ $mol_mem()
 	Name() {
-		return new $mol_string().setup( obj => { 
-			obj.hint = () => "Name"
-			obj.value = ( next? ) => this.name( next )
-		} )
+		return $mol_string.make({ 
+			hint : () => "Name" ,
+			value : ( next? ) => this.name( next ) ,
+		})
 	}
 
 	/// message \
@@ -285,9 +271,9 @@ Or the same code through TypeScript would be:
 ```typescript
 @ $mol_mem()
 Confirm_delete() {
-	return new $mol_row().setup( obj => {
-		obj.sub = ()=> [ this.Yes() , this.No() ]
-	} )
+	return $mol_row.make({
+		sub : ()=> [ this.Yes() , this.No() ] ,
+	})
 }
 ```
 
@@ -381,8 +367,6 @@ The name of the field corresponds to calling the property, the content of the fi
 ## Collections
 
 * **[$mol_range](range)** - lazy array
-* **[$mol_set](set)** - [Set API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
-* **[$mol_dict](dict)** - [Map API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 * **[$mol_maybe](maybe)** - [maybe monad](https://en.wikipedia.org/wiki/Monad_(functional_programming)#The_Maybe_monad)
 * **[$mol_hyperhive](hypehive)** - [HypeHive API](http://hhive.eap.eigenmethod.com/)
 

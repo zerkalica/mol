@@ -66,17 +66,23 @@
 			'ru' : 'Рисует **' + size.graphs + ' столбчатых графиков** по **' + size.series + ' замеров** в каждом.' ,
 		} ,
 		samples : {
+			'mol' : {
+				title : {
+					'en' : '$mol_chart' ,
+				} ,
+				weight : '18 KB' ,
+			} ,
 			'hcharts' : {
 				title : {
 					'en' : 'HighCharts' ,
 				} ,
 				weight : '71 KB' ,
 			} ,
-			'mol' : {
+			'anychart' : {
 				title : {
-					'en' : '$mol_chart' ,
+					'en' : 'AnyChart' ,
 				} ,
-				weight : '18 KB' ,
+				weight : '499 KB' ,
 			} ,
 		} ,
 		steps : {
@@ -139,7 +145,7 @@
 	function measure( message ) {
 		var sandbox = document.getElementById( 'sandbox' )
 		requestAnimationFrame( function() { // begin at next frame start for measure stability reason
-			console.timeStamp( 'begin ' + message[0] )
+			// console.timeStamp( 'begin ' + message[0] )
 			sandbox.contentWindow.postMessage( message , '*' )
 			sandbox.addEventListener( 'animationend' , end )
 			requestAnimationFrame( function(){ setTimeout( function() { // wait for message processed
@@ -148,7 +154,7 @@
 			var start = Date.now()
 			function end() { // wait for painting ends
 				done( Date.now() - start + ' ms' )
-				console.timeStamp( 'end ' + message[0] )
+				// console.timeStamp( 'end ' + message[0] )
 				sandbox.style.animation = ''
 				sandbox.removeEventListener( 'animationend' , end )
 			}
