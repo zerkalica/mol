@@ -35,7 +35,7 @@ namespace $ {
 			let node = childNodes[ i ] as any
 			if( node == null ) continue
 			if( Object( node ) === node ) {
-				if( node[ 'render' ] ) node = node[ 'render' ]()
+				if( node[ 'render' ] ) node = node[ 'dom_node' ]()
 				nodes.push( node )
 			} else {
 				nodes.push( String( node ) )
@@ -84,6 +84,14 @@ namespace $ {
 			const currNode = nextNode
 			nextNode = currNode.nextSibling
 			el.removeChild( currNode )
+		}
+
+		for( let i = 0 ; i < childNodes.length ; ++i ) {
+			let node = childNodes[ i ] as any
+			if( node == null ) continue
+			if( Object( node ) === node ) {
+				if( node[ 'render' ] ) node = node[ 'render' ]()
+			}
 		}
 	}
 	

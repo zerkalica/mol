@@ -121,7 +121,7 @@ namespace $ {
 					}
 				)
 				
-				this.status = $mol_atom_status.pulling
+				//this.status = $mol_atom_status.pulling
 				const next = this.pull( force )
 				
 				this.push( next )
@@ -130,8 +130,7 @@ namespace $ {
 			} catch( error ){
 				if( error instanceof $mol_atom_defer ) {
 					if(!this.slaves) {
-						$mol_atom.syncStartTime = NaN
-						setTimeout( ()=>requestAnimationFrame( ()=> $mol_atom.actualize(this) ),16)
+						if( this.autoFresh ) $mol_atom.actualize( this )
 					}
 					throw error;
 				}
@@ -141,7 +140,7 @@ namespace $ {
 		}
 		
 		pull( force? : $mol_atom_force ) {
-			if( (Date.now() - $mol_atom.syncStartTime) > 15 ) {
+			if( (Date.now() - $mol_atom.syncStartTime) > 30 ) {
 				throw new $mol_atom_defer();
 			}
 			try {

@@ -154,11 +154,10 @@ namespace $ {
 				
 				$mol_dom_render_attributes( node , this.attr() )
 				$mol_dom_render_styles( node , this.style() )
+				$mol_dom_render_fields( node , this.field() )
 				
 				const sub = this.sub_visible()
 				if( sub ) $mol_dom_render_children( node , sub )
-				
-				$mol_dom_render_fields( node , this.field() )
 				
 			} catch( error ) {
 				

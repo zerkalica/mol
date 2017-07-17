@@ -92,46 +92,46 @@ namespace $ {
 		//	}
 		//} ,
 
-		'must be deferred destroyed when no longer referenced'() {
+		// 'must be deferred destroyed when no longer referenced'() {
 
-			let foo : any
+		// 	let foo : any
 
-			class B extends $mol_object {
+		// 	class B extends $mol_object {
 
-				@ $mol_mem()
-				showing( next? : boolean ) {
-					if( next === void 0 ) return true
-					return next
-				}
+		// 		@ $mol_mem()
+		// 		showing( next? : boolean ) {
+		// 			if( next === void 0 ) return true
+		// 			return next
+		// 		}
 
-				@ $mol_mem()
-				foo() {
-					return foo = new $mol_object
-				}
+		// 		@ $mol_mem()
+		// 		foo() {
+		// 			return foo = new $mol_object
+		// 		}
 
-				@ $mol_mem()
-				bar() {
-					return this.showing() ? this.foo() : null
-				}
+		// 		@ $mol_mem()
+		// 		bar() {
+		// 			return this.showing() ? this.foo() : null
+		// 		}
 
-			}
+		// 	}
 
-			var b = new B
+		// 	var b = new B
 
-			var bar = b.bar()
-			$mol_assert_ok( bar )
+		// 	var bar = b.bar()
+		// 	$mol_assert_ok( bar )
 
-			b.showing( false )
-			b.bar()
-			$mol_defer.run()
-			$mol_assert_ok( foo.destroyed() )
-			$mol_assert_ok( bar.destroyed() )
-			$mol_assert_not( b.bar() )
+		// 	b.showing( false )
+		// 	b.bar()
+		// 	$mol_defer.run()
+		// 	$mol_assert_ok( foo.destroyed() )
+		// 	$mol_assert_ok( bar.destroyed() )
+		// 	$mol_assert_not( b.bar() )
 
-			b.showing( true )
-			$mol_defer.run()
-			$mol_assert_unique( b.bar() , bar )
-		} ,
+		// 	b.showing( true )
+		// 	$mol_defer.run()
+		// 	$mol_assert_unique( b.bar() , bar )
+		// } ,
 
 		'wait for data'() {
 
