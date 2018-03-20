@@ -1,0 +1,9 @@
+{
+	"$mol_row_demo_title": "Some controls in one row with equal paddings and wrapping support",
+	"$mol_row_demo_name_hint": "Jack Sparrow",
+	"$mol_row_demo_suggest1": "Jack Sparrow",
+	"$mol_row_demo_suggest2": "Bruce Wayne",
+	"$mol_row_demo_count_hint": "Count",
+	"$mol_row_demo_publish_label": "Shared",
+	"$mol_row_demo_drop_title": "Drop"
+}

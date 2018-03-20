@@ -1,0 +1,22 @@
+[mol_book_demo_placeholder], 
+[mol_book_demo_main], 
+[mol_book_demo_addon] {
+	align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+	color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	flex: 1 1 auto;
+}
+
+[mol_book_demo_placeholder] {
+	background-color: hsl(0, 60%, 90%);
+}
+
+[mol_book_demo_addon] {
+	background-color: hsl(240, 60%, 90%);
+}
+
+[mol_book_demo_main] {
+	background-color: hsl(120, 60%, 90%);
+}

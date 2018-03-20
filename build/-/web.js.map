@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../mol.jam.js","mol.ts"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;ACXA;AACA;AACA","file":"web.js","sourcesContent":[null,"declare namespace $ {}\nexport = $\n\n"]}

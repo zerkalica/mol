@@ -1,0 +1,17 @@
+{
+	"$mol_app_signup_title": "Sign Up form demo",
+	"$mol_app_signup_message_required": "Input required",
+	"$mol_app_signup_message_no_spaces": "Spaces are forbidden",
+	"$mol_app_signup_message_need_more_letters": "More then 2 letter required",
+	"$mol_app_signup_name_first_label": "First Name",
+	"$mol_app_signup_name_first_hint": "Jack",
+	"$mol_app_signup_name_nick_label": "Nick Name",
+	"$mol_app_signup_name_nick_hint": "Capitan",
+	"$mol_app_signup_name_second_label": "Second Name",
+	"$mol_app_signup_name_second_hint": "Sparrow",
+	"$mol_app_signup_sex_label": "Sex",
+	"$mol_app_signup_sex_option_male": "Male",
+	"$mol_app_signup_sex_option_intersex": "Intersex",
+	"$mol_app_signup_sex_option_female": "Female",
+	"$mol_app_signup_submit_text": "Sign Up"
+}

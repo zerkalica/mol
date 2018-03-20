@@ -1,0 +1,8 @@
+{
+  "name": "mol_app_taxon_demo",
+  "version": "0.0.0",
+  "main": "node.js",
+  "dependencies": {
+    "jsdom": "*"
+  }
+}

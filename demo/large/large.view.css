@@ -1,0 +1,15 @@
+[mol_demo_large] {
+	height: 75vh;
+	max-height: 75vh;
+	max-width: 100%;
+	overflow: hidden;
+	box-shadow: var(--mol_skin_light_outline);
+	background: var(--mol_skin_card);
+	color: var(--mol_skin_light_text);
+	position: relative;
+	flex: 1 0 auto;
+	display: flex;
+	align-items: stretch;
+	box-sizing: border-box;
+	align-self: stretch;
+}

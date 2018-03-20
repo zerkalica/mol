@@ -1,0 +1,1 @@
+{"files":["mol/index.html","mol/manifest.json","mol/mol.jam.js","mol/mol.ts","mol/readme.md"],"edgesIn":{"mol":{"mol/build":{"priority":0}},"mol/build":{"mol/build/server":{"priority":0}}},"edgesOut":{"mol/build":{"mol":{"priority":0}},"mol/build/server":{"mol/build":{"priority":0}}},"deps":{"mol/build":{"..":0},"mol":{"..":0,"/mol":0},"mol/build/server":{"..":0}}}

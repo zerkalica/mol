@@ -1,0 +1,3062 @@
+$mol_button $mol_view
+	enabled true
+	minimal_height 40
+	click?event null
+	event_click?event null
+	event *
+		^
+		click?event <=> event_activate?event null
+		keypress?event <=> event_key_press?event null 
+	attr *
+		^
+		disabled <= disabled false
+		role \button
+		tabindex <= tab_index 0
+		title <= hint \
+	sub /
+		<= title -
+
+$mol_button_typed $mol_button
+
+$mol_button_major $mol_button_typed
+$mol_button_minor $mol_button_typed
+$mol_button_danger $mol_button_typed
+
+$mol_scroll $mol_view
+	minimal_height 0
+	moving_hor?val false
+	moving_vert?val false
+	field *
+		^
+		scrollTop <= scroll_top?val 0
+		scrollLeft <= scroll_left?val 0
+		scrollBottom <= scroll_bottom?val 0
+		scrollRight <= scroll_right?val 0
+	event_async *
+		^
+		scroll?event <=> event_scroll?event null
+		- DOMSubtreeModified?event <=> event_repos?event null
+	Strut $mol_view
+		style *
+			transform <= strut_transform \
+
+$mol_page $mol_view
+	sub /
+		<= Head $mol_view
+			sub <= head /
+				<= Title $mol_button
+					sub /
+						<= title -
+					event_click?val <=> event_top?val null
+				<= Tools $mol_view
+					sub <= tools /
+		<= Body $mol_scroll
+			scroll_top?val <=> body_scroll_top?val 0
+			sub <= body /
+		<= Foot $mol_view
+			sub <= foot /
+
+$mol_string $mol_view
+	dom_name \input
+	enabled true
+	debounce 200
+	minimal_height 40
+	field *
+		^
+		disabled <= disabled false
+		value <= value_changed?val <=> value?val \
+		placeholder <= hint \
+		type <= type?val \text
+	attr *
+		^
+		maxlength <= length_max Infinity
+	event *
+		^
+		input?event <=> event_change?event null
+		keypress?event <=> event_key_press?event null
+
+$mol_link $mol_view
+	minimal_height 40
+	dom_name \a
+	attr *
+		^
+		href <= uri \
+		title <= hint \
+		target <= target \_self
+		download <= file_name \
+		mol_link_current <= current false
+	sub / <= title -
+	arg *
+	event *
+		^
+		click?event <=> click?event <=> event_click?event null
+
+$mol_svg $mol_view
+	dom_name \svg
+	dom_name_space \http://www.w3.org/2000/svg
+
+
+$mol_svg_root $mol_svg
+	dom_name \svg
+	attr *
+		^
+		viewBox <= view_box \0 0 100 100
+		preserveAspectRatio <= aspect \xMidYMid
+
+$mol_svg_path $mol_svg
+	dom_name \path
+	attr *
+		^
+		d <= geometry \
+
+
+$mol_icon $mol_svg_root
+	view_box \0 0 24 24
+	sub /
+		<= Path $mol_svg_path
+			geometry <= path \
+
+$mol_icon_load $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
+
+$mol_bar $mol_view
+
+$mol_float $mol_view
+	vertical true
+	horizontal true
+	style *
+		^
+		transform <= shiftStyle \
+	attr *
+		^
+		mol_float_scrolling <= scrolling false
+
+$mol_check $mol_button_typed
+	attr *
+		^
+		mol_check_checked <= checked?val false
+		aria-checked <= checked?val false
+		role \checkbox
+	sub /
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
+$mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
+
+$mol_check_box $mol_check
+	Icon $mol_icon_tick
+
+$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
+
+$mol_check_expand $mol_check
+	minimal_height 32
+	Icon $mol_icon_chevron
+	level 0
+	style *
+		^
+		paddingLeft <= level_style \0px
+	checked?val <=> expanded?val false
+	enabled <= expandable false
+
+$mol_dimmer $mol_view
+	haystack \
+	needle \
+	sub <= parts /
+	Low!id $mol_view
+		sub /
+			<= string!id \
+
+$mol_grid $mol_scroll
+	row_ids /
+	row_id!index null
+	col_ids /
+	records *
+	record!id null
+	hierarchy null
+	hierarchy_col \
+	-
+	sub /
+		<= Table $mol_grid_table
+			offset <= gap_top 0
+			sub /
+				<= rows_visible /
+	rows /
+	Head $mol_grid_row
+		height <= row_height 40
+		cells <= head_cells /
+	Row!id $mol_grid_row
+		height <= row_height 40
+		cells <= cells!id /
+	-
+	Cell!id $mol_view
+	cell!id null
+	Cell_text!id $mol_grid_cell
+		sub /
+			<= cell_content_text!id <= cell_content!id /
+	Cell_number!id $mol_grid_number
+		sub /
+			<= cell_content_number!id <= cell_content!id /
+	Col_head!id $mol_float
+		dom_name \th
+		horizontal false
+		sub /
+			<= col_head_content!id /
+	Cell_branch!id $mol_check_expand
+		level <= cell_level!id 0
+		label <= cell_content!id /
+		expanded?val <=> cell_expanded!id?val false
+	Cell_content!id /
+		<= Cell_dimmer!id $mol_dimmer
+			needle <= needle \
+			haystack <= cell_value!id \
+
+$mol_grid_table $mol_view
+	dom_name \table
+	style *
+		^
+		top <= offset 0
+
+$mol_grid_gap $mol_view
+	style *
+		^
+		top <= offset 0
+
+$mol_grid_row $mol_view
+	dom_name \tr
+	style *
+		^
+		height <= height 40
+	sub <= cells /
+
+$mol_grid_cell $mol_view
+	dom_name \td
+
+$mol_grid_number $mol_grid_cell
+
+$mol_plugin $mol_view
+
+$mol_nav $mol_plugin
+	cycle?val false
+	-
+	mod_ctrl false
+	mod_shift false
+	mod_alt false
+	-
+	keys_x?val /
+	keys_y?val /
+	-
+	current_x?val \
+	current_y?val \
+	-
+	event_up?event null
+	event_down?event null
+	event_left?event null
+	event_right?event null
+	event *
+		^
+		keydown?event <=> event_key?event null
+
+$mol_app_calc $mol_page
+	current?val *
+		row 1
+		col \A
+	formula!id?val \
+	head /
+		<= Title_edit $mol_string
+			value?val <=> title?val @ \Spreedsheet
+		<= Tools -
+	tools /
+		<= Download $mol_link
+			hint <= download_hint @ \Download
+			file_name <= download_file \
+			uri <= download_uri?val \
+			click?event <=> download_generate?event null
+			sub /
+				<= Download_icon $mol_icon_load
+	sub /
+		<= Head -
+		<= Current $mol_bar
+			sub /
+				<= Pos $mol_string
+					enabled false
+					value <= pos \
+				<= Edit_current $mol_string
+		<= Body $mol_grid
+			col_ids <= col_ids /
+			row_ids <= row_ids /
+			head_cells <= head_cells /
+			cells!row <= cells!row /
+	Edit!id $mol_string
+		hint \=
+		value?val <=> formula!id?val \
+	Col_head!id $mol_float
+		dom_name \th
+		horizontal false
+		sub / <= col_title!id \
+	Row_head!id $mol_float
+		dom_name \th
+		vertical false
+		sub / <= row_title!id \
+	Cell!id $mol_app_calc_cell
+		value <= result!id \
+		selected?val <=> selected!id?val false
+	plugins /
+		<= Nav $mol_nav
+			mod_alt true
+			keys_x <= col_ids /
+			keys_y <= row_ids /
+			current_x?val <=> current_col?val \A
+			current_y?val <=> current_row?val 1
+	event *
+		paste?event <=> paste?event null
+
+$mol_app_calc_cell $mol_button
+	dom_name \td
+	sub /
+		<= value \
+	attr *
+		^
+		mol_app_calc_cell_selected <= selected?val false
+		mol_app_calc_cell_type <= type?val \
+
+$mol_demo_large $mol_view
+
+$mol_app_calc_demo $mol_demo_large
+	sub /
+		<= App $mol_app_calc
+
+$mol_meter $mol_plugin
+	width?val 0
+	height?val 0
+	-
+	left?val 0
+	right?val 0
+	bottom?val 0
+	top?val 0
+
+$mol_touch $mol_plugin
+	start_zoom?val 0
+	start_distance?val 0
+	zoom?val 1
+	-
+	start_pan?val /
+		0
+		0
+	pan?val /
+		0
+		0
+	-
+	start_pos?val null
+	swipe_precision 16
+	-
+	swipe_right?val null
+	swipe_bottom?val null
+	swipe_left?val null
+	swipe_top?val null
+	-
+	swipe_from_right?val null
+	swipe_from_bottom?val null
+	swipe_from_left?val null
+	swipe_from_top?val null
+	-
+	swipe_to_right?val null
+	swipe_to_bottom?val null
+	swipe_to_left?val null
+	swipe_to_top?val null
+	-
+	event *
+		^
+		touchstart?event <=> event_start?event null
+		touchmove?event <=> event_move?event null
+		touchend?event <=> event_end?event null
+		mousedown?event <=> event_start?event null
+		mousemove?event <=> event_move?event null
+		mouseup?event <=> event_end?event null
+	event_async *
+		wheel?event <=> event_wheel?event null
+
+$mol_ghost $mol_view
+	Sub $mol_view
+
+$mol_book $mol_view
+	sub <= pages_wrapped /
+	pages /
+	plugins /
+		<= Meter $mol_meter
+			width => width
+		<= Touch $mol_touch
+			swipe_from_left?val <=> event_front_up?val null
+			swipe_to_left?val <=> event_front_down?val null
+	Page!index $mol_book_page
+		Sub <= page!index null
+		visible <= page_visible!index true
+	Placeholder $mol_book_placeholder
+		title <= title -
+
+$mol_book_placeholder $mol_scroll
+	minimal_width 400
+	attr *
+		^
+		tabindex null
+	sub /
+		<= title -
+
+$mol_book_page $mol_ghost
+	attr *
+		^
+		tabindex 0
+		mol_book_page_focused <= focused -
+		mol_book_page_visible <= visible true
+
+$mol_icon_folder $mol_icon path \M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z
+
+$mol_icon_file2 $mol_icon path \M19.9166667,5.8344 L22,7.8344 L22,24 L4.08333333,24 L4.08333333,22 L2,22 L2,0 L19.9166667,0 L19.9166667,5.8344 Z M16.1666667,3.3656 L16.1666667,7.6 L20.5775,7.6 L19.9166667,6.9656 L16.1666667,3.3656 Z M2.83333333,21.2 L4.08333333,21.2 L4.08333333,2 L15.9225,2 L19.0833333,5.0344 L19.0833333,0.8 L2.83333333,0.8 L2.83333333,21.2 Z M4.91666667,23.2 L21.1666667,23.2 L21.1666667,8.4 L15.3333333,8.4 L15.3333333,2.8 L4.91666667,2.8 L4.91666667,22 L4.91666667,23.2 Z M18.25,10 C18.48,10 18.6666667,10.1788 18.6666667,10.4 C18.6666667,10.6212 18.48,10.8 18.25,10.8 L7.83333333,10.8 C7.60333333,10.8 7.41666667,10.6212 7.41666667,10.4 C7.41666667,10.1788 7.60333333,10 7.83333333,10 L18.25,10 Z M7.83333333,7.6 C7.60333333,7.6 7.41666667,7.4212 7.41666667,7.2 C7.41666667,6.9788 7.60333333,6.8 7.83333333,6.8 L12,6.8 C12.23,6.8 12.4166667,6.9788 12.4166667,7.2 C12.4166667,7.4212 12.23,7.6 12,7.6 L7.83333333,7.6 Z M18.25,13.2 C18.48,13.2 18.6666667,13.3788 18.6666667,13.6 C18.6666667,13.8212 18.48,14 18.25,14 L7.83333333,14 C7.60333333,14 7.41666667,13.8212 7.41666667,13.6 C7.41666667,13.3788 7.60333333,13.2 7.83333333,13.2 L18.25,13.2 Z M18.25,16.4 C18.48,16.4 18.6666667,16.5788 18.6666667,16.8 C18.6666667,17.0212 18.48,17.2 18.25,17.2 L7.83333333,17.2 C7.60333333,17.2 7.41666667,17.0212 7.41666667,16.8 C7.41666667,16.5788 7.60333333,16.4 7.83333333,16.4 L18.25,16.4 Z M18.25,19.6 C18.48,19.6 18.6666667,19.7788 18.6666667,20 C18.6666667,20.2212 18.48,20.4 18.25,20.4 L7.83333333,20.4 C7.60333333,20.4 7.41666667,20.2212 7.41666667,20 C7.41666667,19.7788 7.60333333,19.6 7.83333333,19.6 L18.25,19.6 Z
+
+$mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
+
+$mol_list $mol_view
+	sub <= rows /
+	Empty null
+
+$mol_text $mol_list
+	uri_base \
+	text \
+	Row!id $mol_text_row
+		sub <= block_content!id /
+		type <= block_type!id \
+	Span!id $mol_text_span
+	Link!id $mol_text_link
+	Image!id $mol_text_image
+	Header!id $mol_text_header
+		level <= header_level!id 0
+		content <= header_content!id /
+	Table!id $mol_grid
+		head_cells <= table_head_cells!id /
+		rows <= table_rows!id /
+	Table_row!id $mol_grid_row
+		cells <= table_cells!id /
+	Table_cell!id $mol_grid_cell
+		sub <= table_cell_content!id /
+	Table_cell_head!id $mol_float
+		sub <= table_cell_content!id /
+
+$mol_text_row $mol_view
+	minimal_height 40
+	attr *
+		^
+		mol_text_type <= type \
+
+$mol_text_header $mol_view
+	dom_name \h
+	minimal_height 50
+	attr *
+		^
+		mol_text_header_level <= level?val 0
+	sub <= content /
+
+$mol_text_span $mol_view
+	dom_name \span
+	attr *
+		^
+		mol_text_type <= type?val \
+	sub <= content?val /
+
+$mol_text_link $mol_view
+	dom_name \a
+	attr *
+		^
+		mol_text_type <= type?val \
+		href <= link?val \
+	sub <= content?val /
+
+$mol_text_image $mol_view
+	dom_name \object
+	attr *
+		^
+		mol_text_type <= type?val \
+		data <= link?val \
+	sub /
+		<= title?val \
+
+$mol_embed $mol_ghost
+	Pdf $mol_embed_pdf
+		uri <= uri \
+	Native $mol_embed_native
+		uri <= uri \
+		mime <= mime \
+
+$mol_embed_native $mol_view
+	dom_name \object
+	attr *
+		^
+		data <= uri \
+		type <= mime \
+	sub /
+		<= Open $mol_link
+			uri <= uri \
+			sub /
+				<= Open_button $mol_button_major
+					title <= open_label @ \Open
+
+$mol_embed_pdf $mol_scroll
+	uri \
+	sub  /
+		<= Pages $mol_list 
+			rows <= pages /
+	Page!index $mol_embed_pdf_page
+		page <= page!index null
+
+$mol_embed_pdf_page $mol_view
+	dom_name \canvas
+	page null
+	max_width 640
+	scale_over 1.25
+	plugins /
+		<= Touch $mol_touch
+			zoom?val <=> scale?val 1
+	style *
+		zoom <= zoom 0.8
+	field *
+		width <= width 0
+		height <= height 0
+
+$mol_app_files $mol_book
+	uri_current <= uri_root <= uri_root_default \
+	credentials *
+		login \
+		password \
+	title <= title_root @ \Documents
+	-
+	Folder!folder $mol_app_files_folder
+		title <= webdav_title!folder \
+		description <= webdav_description!folder \
+		tools <= page_tools!folder -
+		rows <= folder_rows!folder /
+		event_top?val <=> event_front_up?val -
+	-
+	Folder_row!uri $mol_link
+		minimal_height 40
+		arg <= folder_row_arg!uri *
+		current <= folder_row_current!uri false
+		sub /
+			<= folder_row_icon!uri null
+			<= Folder_row_info!uri $mol_view
+				sub /
+					<= Folder_row_descr!uri $mol_view
+						sub /
+							<= folder_row_descr!uri \
+					<= Folder_row_title!uri $mol_view
+						sub /
+							<= folder_row_title!uri \
+	-
+	File!file $mol_app_files_file
+		title <= webdav_title!file -
+		tools <= page_tools!file -
+		src <= file_uri!file \
+		mime <= file_mime!file \
+		event_top?val <=> event_front_up?val -
+	-
+	Icon_folder!uri $mol_icon_folder
+	-
+	Icon_file!uri $mol_icon_file2
+	-
+	Placeholder $mol_book_placeholder
+		title <= title -
+	-
+	tools_root /
+	page_tools!uri /
+		<= Close!uri $mol_link
+			sub /
+				<= Close_icon!uri $mol_icon_cross
+			arg <= close_arg!uri *
+
+$mol_app_files_folder $mol_page
+	minimal_width 400
+	body /
+		<= Description $mol_text
+			text <= description \
+		<= Folder_rows $mol_list
+			rows <= rows /
+
+$mol_app_files_file $mol_page
+	minimal_width 800
+	body /
+		<= Embed $mol_embed
+			uri <= src \
+			mime <= mime \
+
+$mol_app_files_demo $mol_demo_large
+	sub /
+		<= App $mol_app_files
+			title_root <= title @ \WebDAV client
+			uri_root_default <= uri_root \http://ajaxexplorer.com/User5df12c6/
+
+$mol_app_habhub $mol_book
+	pages /
+		<= Menu_page $mol_page
+			minimal_width 400
+			title <= menu_title @ \HabHub
+			body /
+				<= Menu $mol_list
+					rows <= menu_rows /
+		<= Details $mol_page
+			minimal_width 600
+			title <= gist_current_title \
+			event_top?val <=> event_front_up?val -
+			tools /
+				<= Close $mol_link
+					arg <= close_arg * gist null
+					sub /
+						<= Close_icon $mol_icon_cross
+			body_scroll_top?val <=> details_scroll_top?val 0
+			body /
+				<= Details_content $mol_list
+					rows /
+						<= Datails_text $mol_text
+							text <= gist_current_content \
+						- <= Details_chat $mol_chat
+							issue <= gist_current_issue $mol_github_issue
+	Menu_row!id $mol_link
+		title <= gist_title!id \
+		arg <= gist_arg!id *
+
+$mol_app_habhub_demo $mol_demo_large
+	title @ \Articles from GitHub
+	sub /
+		<= App $mol_app_habhub
+
+$mol_app_hello $mol_view
+	sub /
+		<= Name $mol_string
+			hint <= name_hint \Name
+			value?val <=> name?val \
+		<= Greeting $mol_view
+			sub /
+				<= greeting \
+
+$mol_app_hello_demo $mol_demo_large
+	title @ \Simpliest application
+	sub /
+		<= App $mol_app_hello
+
+$mol_pop $mol_view
+	showed?val false
+	plugins /
+		<= Meter $mol_meter
+			top => top
+			bottom => bottom
+			left => left
+			right => right
+	sub /
+		<= Anchor null
+		<= Bubble $mol_pop_bubble
+			align <= align \bottom_center
+			content <= bubble_content /
+			height_max <= height_max 9999
+
+$mol_pop_bubble $mol_scroll
+	sub <= content /
+	style *
+		^
+		maxHeight <= height_max 9999
+	attr *
+		^
+		mol_pop_align <= align \
+		tabindex 0
+
+$mol_select $mol_pop
+	dictionary *
+	options /
+	value?val \
+	minimal_height 40
+	Option_row!id $mol_button_minor
+		event_click?event <=> event_select!id?event null
+		sub <= option_content!id /
+			<= Option_label!id $mol_dimmer
+				minimal_height 40
+				haystack <= option_label!id \
+				needle <= filter_pattern?val \
+	No_options $mol_view
+		sub /
+			<= no_options_message @ \No options
+	plugins /
+		<= Nav $mol_nav
+			keys_y <= nav_components /
+				<= Filter -
+				<= option_rows -
+			current_y?component <=> option_focused?component null
+			cycle?val <=> nav_cycle?val true
+	showed <= options_showed false
+	Anchor <= Trigger $mol_button_typed
+		sub <= trigger_content /
+			<= option_content_current /
+			<= Filter $mol_string
+				value?val <=> filter_pattern?val \
+				hint <= filter_hint <= hint @ \Search..
+				debounce <= debounce 200
+			<= Trigger_icon $mol_icon_chevron
+	bubble_content /
+		<= Bubble_content $mol_list
+			rows <= option_rows /
+
+$mol_search $mol_bar
+	query?val \
+	sub /
+		<= Suggest $mol_select
+			value?val <=> suggest_selected?val \
+			filter_pattern?val <=> suggest_selected?val \
+			hint <= hint @ \Search...
+			filter_pattern?val <=> query?val -
+			options_showed <= suggests_showed false
+			options <= suggests /
+			Trigger_icon null
+			debounce <= debounce 200
+		<= Clear $mol_button_minor
+			sub /
+				<= Clear_icon $mol_icon_cross
+			event_click?val <=> event_clear?val null
+
+$mol_code $mol_view
+	sub /
+		<= Manual $mol_search
+			query?val <=> value?val \
+			hint <= hint <= format \
+			debounce <= debounce 200
+		<= Scan $mol_button
+			event_click?val <=> event_scan?val null
+			sub /
+				<= scan_label @ \Scan
+
+$mol_row $mol_view
+
+$mol_row_sub $mol_view
+
+$mol_labeler $mol_view
+	sub /
+		<= Title $mol_view
+			sub <= label /
+				<= title -
+		<= Content $mol_view
+			sub /
+				<= content null
+
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title -
+
+$mol_app_lamps $mol_book
+	lamp_current_id?val \
+	pages /
+		<= Addon_page $mol_page
+			minimal_width 400
+			title \LampTest.ru
+			body_scroll_top?val <=> menu_scroll_top?val 0
+			body /
+				<= Menu $mol_list
+					rows /
+						<= Filter_panel $mol_float
+							sub /
+								<= Filter $mol_code
+									hint <= filter_hint @ \Filter...
+									value?val <=> filter?val \
+						<= lamp_rows /
+		<= Main_page $mol_page
+			minimal_width 400
+			title <= title \
+			event_top?val <=> event_front_up?val -
+			tools /
+				<= Close $mol_link
+					sub /
+						<= Close_icon $mol_icon_cross
+					arg *
+						lamp null
+			body /
+				<= Info $mol_row
+					sub /
+						<= Stat $mol_row
+							sub /
+								<= Rating $mol_labeler
+									title <= rating_title @ \Rating
+									content /
+										<= rating 0
+						<= Body $mol_row
+							sub /
+								<= Type $mol_labeler
+									title <= type_title @ \Type
+									content /
+										<= type \
+								<= Shape $mol_labeler
+									title <= shape_title @ \Shape
+									content /
+										<= shape \
+								<= Base $mol_labeler
+									title <= base_title @ \Base
+									content /
+										<= base \
+						<= Light $mol_row
+							sub /
+								<= Temp $mol_labeler
+									title <= Temp_title @ \Temperature
+									content /
+										<= temp \
+								<= Cri $mol_labeler
+									title <= cri_title @ \CRI
+									content /
+										<= cri \
+								<= Ripple $mol_labeler
+									title <= ripple_title @ \Ripple
+									content /
+										<= ripple \
+								<= Angle $mol_labeler
+									title <= angle_title @ \Angle
+									content /
+										<= angle \
+				<= Gallery $mol_row
+					sub /
+						<= Photo $mol_image
+							uri <= photo \
+							title <= title -
+	Lamp_row!id $mol_lamps_lamp_row
+		title <= lamp_title!id \
+		arg <= lamp_arg!id *
+
+$mol_lamps_lamp_row $mol_link
+	minimal_height 33
+	sub /
+		<= title -
+
+$mol_app_lamps_demo $mol_demo_large
+	title @ \Lamps information from LampTest
+	sub /
+		<= App $mol_app_lamps
+
+$mol_plot_pane $mol_svg_root
+	aspect \none
+	-
+	hue_base?val NaN
+	hue_shift?val 111
+	-
+	gap 24
+	gap_hor <= gap -
+	gap_vert <= gap -
+	gap_left <= gap_hor -
+	gap_right <= gap_hor -
+	gap_top <= gap_vert -
+	gap_bottom <= gap_vert -
+	-
+	shift /
+		0
+		0
+	scale /
+		1
+		1
+	size_real /
+		1
+		1
+	-
+	sub <= graphs_sorted <= graphs_colored <= graphs_positioned <= graphs /
+	-
+	plugins /
+		<= Meter $mol_meter
+			width => width
+			height => height
+
+$mol_svg_group $mol_svg
+	dom_name \g
+
+$mol_plot_graph $mol_svg_group
+	series *
+	points <= points_scaled <= points_raw /
+	threshold 4
+	shift /
+		0
+		0
+	scale /
+		1
+		1
+	dimensions_expanded <= dimensions /
+		/
+		/
+	size_real /
+		0
+		0
+	hue NaN
+	-
+	attr *
+		^
+		mol_plot_graph_type <= type \solid
+	-
+	style *
+		^
+		color <= color \
+	-
+	Sample null
+	-
+	front /
+	back /
+
+$mol_plot_graph_sample $mol_view
+	attr *
+		^
+		mol_plot_graph_type <= type \solid
+	style *
+		^
+		color <= color \black
+
+$mol_plot_dot $mol_plot_graph
+	style *
+		^
+		stroke-width <= diameter 8
+	sub /
+		<= Curve $mol_svg_path
+			geometry <= curve \
+	-
+	Sample $mol_plot_graph_sample
+		color <= color -
+
+$mol_app_life_map $mol_plot_pane
+	gap 0
+	-
+	pan?val /
+		0
+		0
+	zoom?val 16
+	scale /
+		<= zoom -
+		<= zoom -
+	shift <= pan -
+	-
+	graphs /
+		<= Points $mol_plot_dot
+			threshold 0
+			diameter <= zoom -
+			points_raw <= points /
+	-
+	plugins /
+		<= Touch $mol_touch
+			zoom?val <=> zoom?val -
+			pan?val <=> pan?val -
+	-
+	snapshot \
+	snapshot_current \
+	-
+	speed 0
+	population 0
+	-
+	event *
+		^
+		mousedown?event <=> draw_start?event null
+		mouseup?event <=> draw_end?event null
+
+$mol_icon_stored $mol_icon path \M10.5,17.5L7,14L8.41,12.59L10.5,14.67L15.68,9.5L17.09,10.91M10,4H14V6H10M20,6H16V4L14,2H10L8,4V6H4C2.89,6 2,6.89 2,8V19C2,20.11 2.89,21 4,21H20C21.11,21 22,20.11 22,19V8C22,6.89 21.11,6 20,6Z
+
+$mol_switch $mol_view
+	minimal_height 40
+	Option!id $mol_check
+		checked?val <=> option_checked!id?val false
+		title <= option_title!id \
+		enabled <= option_enabled!id <= enabled true
+	value?val null
+	options *
+	sub <= items /
+
+$mol_app_life $mol_page
+	title @ \Life of {population} cells
+	tools /
+		<= Store_link $mol_link
+			uri <= store_link?val \
+			hint <= store_link_hint @ \Store snapshot
+			sub /
+				<= Stored $mol_icon_stored
+		<= Time $mol_switch
+			value?val <=> speed?val 0
+			options *
+				1 <= time_slowest_label @ \Slowest
+				5 <= time_slow_label @ \Slow
+				25 <= time_fast_label @ \Fast
+				60 <= time_fastest_label @ \Fastest
+	-
+	sub /
+		<= Head -
+		<= Map $mol_app_life_map
+			speed <= speed -
+			snapshot <= snapshot \0~-2ffff~10002~-20000~-1fffe~3~10003~20003
+			snapshot_current => snapshot_current
+			population => population
+
+$mol_app_life_demo $mol_demo_large
+	title @ \Conway's Game of Life
+	sub /
+		<= App $mol_app_life
+
+$mol_icon_external $mol_icon path \M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z
+
+$mol_app_questions $mol_book
+	Placeholder $mol_book_placeholder
+		minimal_width 600
+		title <= placeholder \Stack Overflow
+	-
+	Menu $mol_page
+		title <= title_default @ \Questions
+		minimal_width 400
+		body /
+			<= Menu_links $mol_list
+				rows <= menu_rows /
+	-
+	Details!id $mol_page
+		minimal_width 600
+		title <= question_title!id \
+		event_top?val <=> event_front_up?val -
+		tools /
+			<= Details_permalink!id $mol_link
+				uri <= question_permalink!id \
+				sub /
+					<= Details_permalink_icon!id $mol_icon_external
+			<= Details_close!id $mol_link
+				sub /
+					<= Details_close_icon!id $mol_icon_cross
+				arg *
+					question null
+		body /
+			<= Details_descr!id $mol_text
+				text <= question_descr!id \
+			<= Answers!id $mol_list
+				rows <= answers!id /
+	-
+	Answer!id $mol_text
+		text <= question_answer!id \
+	-
+	Question_link!index $mol_link
+		minimal_height 70
+		arg <= question_arg_by_index!index *
+		sub /
+			<= Question_row!index $mol_row sub /
+				<= Question_title!index $mol_view
+					sub /
+						<= question_title_by_index!index \
+				<= Question_tags!index $mol_view
+					sub <= question_tags_by_index!index /
+	-
+	Tag!id $mol_view
+		sub /
+			<= tag_name!id \ 
+
+$mol_app_questions_demo $mol_demo_large
+	title @ \New questions from StackOverflow
+	sub /
+		<= App $mol_app_questions
+
+$mol_app_quine $mol_page
+	title @ \Quine - Application that prints self sources
+	body /
+		<= Content $mol_row
+			sub /
+				<= Text $mol_text
+					text <= content \
+	-
+	paths /
+		\mol/app/quine/quine.view.tree
+		\mol/app/quine/quine.view.ts
+		\mol/app/quine/index.html
+		\mol/app/quine/quine.locale=ru.json
+
+$mol_app_quine_demo $mol_demo_large
+	sub /
+		<= App $mol_app_quine
+
+$mol_icon_minus $mol_icon path \M19 13H5v-2h14v2z
+
+$mol_icon_plus $mol_icon path \M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z
+
+$mol_number $mol_view
+	precision_view <= precision 1
+	precision_change <= precision 1
+	value?val NaN
+	sub /
+		<= Dec $mol_button_minor
+			event_click?val <=> event_dec?val null
+			enabled <= dec_enabled <= enabled true
+			sub / <= dec_icon $mol_icon_minus
+		<= String $mol_string
+			type \number
+			value?val <=> value_string?val \
+			hint <= hint \
+			enabled <= string_enabled <= enabled true
+			debounce <= debounce 200
+		<= Inc $mol_button_minor
+			event_click?val <=> event_inc?val null
+			enabled <= inc_enabled <= enabled true
+			sub / <= inc_icon $mol_icon_plus
+
+$mol_app_report $mol_page
+	title @ \Pump #1337 - Technical passport
+	body /
+		<= descriptor $mol_view
+			sub / <= description \
+		<= tabler $mol_app_report_tabler
+			rows /
+				<= headRower $mol_app_report_rower
+					cells <= headCells /
+				<= rows /
+	rower!id $mol_app_report_rower
+		cells <= rowerCells!id /
+	cell!id $mol_app_report_cell
+		content <= cell_content!id null
+		rows <= cellrows!id 1
+		cols <= cellCols!id 1
+	texter!id $mol_view
+		sub / <= cell_value!id?val null
+	select!id $mol_select
+		value?val <=> cell_value!id?val null
+		dictionary <= cell_options!id *
+	number!id $mol_number
+		value?val <=> cell_value!id?val null
+
+$mol_app_report_tabler $mol_view
+	dom_name \table
+	sub <= rows /
+	
+$mol_app_report_rower $mol_view
+	dom_name \tr
+	sub <= cells /
+
+$mol_app_report_cell $mol_view
+	dom_name \td
+	attr *
+		^
+		colspan <= cols 1
+		rowspan <= rows 1
+	sub / <= content null
+
+$mol_app_report_demo $mol_demo_large
+	sub /
+		<= App $mol_app_report
+
+$mol_form $mol_view
+	submit_blocked false
+	sub /
+		<= Bar_fields $mol_view
+			sub <= form_fields /
+		<= Bar_buttons $mol_row
+			sub <= buttons /
+
+$mol_form_field $mol_labeler
+	label /
+		<= name \
+		<= Bid $mol_view
+			sub <= errors / <= bid \
+	Content <= control null
+
+$mol_app_signup $mol_scroll
+	title @ \Sign Up form demo
+	message_required @ \Input required
+	message_no_spaces @ \Spaces are forbidden
+	message_need_more_letters @ \More then 2 letter required
+	sub /
+		<= Form $mol_form
+			form_fields /
+				<= Name_first_field $mol_form_field
+					name <= name_first_label @ \First Name
+					bid <= name_first_bid \
+					control <= Name_first_control $mol_string
+						hint <= name_first_hint @ \Jack
+						value?val <=> name_first?val \
+				<= Name_nick_field $mol_form_field
+					name <= name_nick_label @ \Nick Name
+					bid <= name_nick_bid \
+					control <= Name_nick_control $mol_string
+						hint <= name_nick_hint @ \Capitan
+						value?val <=> name_nick?val \
+				<= Name_second_field $mol_form_field
+					name <= name_second_label @ \Second Name
+					bid <= name_second_bid \
+					control <= Name_second_control $mol_string
+						hint <= name_second_hint @ \Sparrow
+						value?val <=> name_second?val \
+				<= Sex_field $mol_form_field
+					name <= sex_label @ \Sex
+					bid <= sex_bid \
+					control / <= Sex_control $mol_switch
+						value?val <=> sex?val \
+						options <= sex_options *
+							male <= sex_option_male @ \Male
+							intersex <= sex_option_intersex @ \Intersex
+							female <= sex_option_female @ \Female
+			buttons /
+				<= Submit $mol_button_major
+					sub / <= submit_text @ \Sign Up
+					event_click?val <=> event_submit?val null
+					disabled <= submit_blocked true
+
+$mol_app_signup_demo $mol_demo_large
+	sub /
+		<= App $mol_app_signup
+
+$mol_card $mol_list
+	attr *
+		^
+		mol_card_status_type <= status \
+	rows /
+		<= Content $mol_view
+			sub <= content /
+		<= Status $mol_view
+			minimal_height 30
+			sub /
+				<= status_text <= status \
+
+$mol_cost $mol_view
+	value null
+	sub /
+		<= Prefix $mol_view
+			sub /
+				<= prefix \
+		<= Value $mol_view
+			sub /
+				<= value_view \
+		<= Postfix $mol_view
+			sub /
+				<= postfix \
+
+$mol_app_supplies_card $mol_link
+	supply null
+	sub /
+		<= Card $mol_card
+			status <= status \
+			Content <= Group $mol_row
+				sub /
+					<= items /
+						<= Code_item $mol_labeler
+							title <= code_title @ \Code
+							content <= code \
+						<= Cost_item $mol_labeler
+							title <= cost_title @ \Cost
+							content <= Cost $mol_cost
+								value <= cost $mol_unit_money
+									valueOf 0
+						<= Provider_item $mol_labeler
+							title <= provider_title @ \Provider
+							content <= provider_name \
+
+$mol_app_supplies_list $mol_page
+	supplies /
+	title @ \Supplies
+	body /
+		<= Search_bar $mol_float
+			sub /
+				<= Search $mol_code
+					hint <= search_hint @ \Search supply by bar code
+					value?val <=> search_query?val \
+		<= Supply_rows $mol_list
+			rows <= supply_rows /
+	-
+	Supply_row!index $mol_app_supplies_card
+		supply <= supply!index null
+		arg <= supply_arg!index *
+			supply <= supply_id!index \
+
+$mol_deck $mol_list
+	items /
+		*
+			title \
+			Content $mol_view
+	rows /
+		<= Switch $mol_switch
+			value?val <=> current?val \0
+			options <= switch_options *
+		<= Content null
+
+$mol_section $mol_list rows /
+	<= Head $mol_view
+		sub /
+			<= head null
+	<= Content null
+
+$mol_tiler $mol_view sub / <= items /
+
+$mol_icon_attach $mol_icon path \M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z
+
+$mol_attach $mol_card
+	Content $mol_tiler
+		items <= content /
+			<= items?val /
+			<= Add $mol_attach_add file_new?val <=> attach_new?val \
+	Item!id $mol_attach_item
+		title <= attach_title \
+
+$mol_attach_item $mol_link
+	url_thumb?val \
+	uri?val <=> url_load?val \
+	style *
+		^
+		backgroundImage <= style_bg \
+	attr *
+		^
+		download <= title \
+
+$mol_attach_add $mol_button_minor
+	minimal_height 60
+	file_new?val \
+	sub /
+		<= Icon $mol_icon_attach
+		<= Input $mol_attach_add_input
+			event_capture?val <=> event_capture?val null
+			event_picked?val <=> event_picked?val null
+
+$mol_attach_add_input $mol_view
+	dom_name \input
+	attr *
+		^
+		type <= type \file
+		accept <= accept \image/*;capture=camera
+		multiple <= multiple true
+	event_click?val <=> event_capture?val null
+	event *
+		^
+		change?val <=> event_picked?val null
+
+$mol_app_supplies_position $mol_card
+	minimal_height 70
+	position $mol_app_supplies_domain_supply_position
+	
+	Content <= Row $mol_view sub /
+		
+		<= Main_group $mol_row sub /
+			
+			<= Product_item $mol_labeler
+				title <= product_title @ \Product
+				content <= product_name \
+			
+			<= Cost_item $mol_labeler
+				title <= cost_title @ \Cost
+				content <= Cost $mol_cost
+					value <= cost $mol_unit_money
+						valueOf 0
+		
+		<= Addon_group $mol_row sub /
+			
+			<= Division_item $mol_labeler
+				title <= division_title @ \Division
+				content <= division_name \
+			
+			<= Price_item $mol_labeler
+				title <= price_label @ \Price
+				content <= Price $mol_cost
+					value <= price $mol_unit_money
+						valueOf 0
+		
+		<= Supply_group $mol_row sub /
+			
+			<= Quantity_item $mol_labeler
+				title <= quantity_title @ \Quantity
+				content <= quantity \
+			
+			<= Supply_date_item $mol_labeler
+				title <= supply_date_title @ \Supply date
+				content <= supply_date \
+			
+			<= Store_item $mol_labeler
+				title <= store_title @ \Store
+				content <= store_name \
+
+$mol_app_supplies_detail $mol_page
+	supply null
+	title @ \Supply
+	tools /
+		<= Close $mol_link
+			sub / <= Close_icon $mol_icon_cross
+			arg <= close_arg *
+				supply null
+	body /
+		<= Content $mol_list
+			rows /
+				<= Descr_card $mol_card
+					Content <= Descr_deck $mol_deck
+						items /
+							<= Org *
+								title <= org_title @ \Organization
+								Content <= Org_content $mol_row
+									sub <= org_items /
+										<= Provider $mol_labeler
+											title <= provider_title @ \Provider
+											content <= provider_name \
+										<= Consumer $mol_labeler
+											title <= customer_label @ \Consumer
+											content <= consumer_name \
+										<= Supply_group $mol_labeler
+											title <= supply_group_title @ \Supply Group
+											content <= supply_group_name \
+										<= Ballance_unit_item $mol_labeler
+											title <= ballance_unit_title @ \Ballance Unit
+											content <= ballance_unit_name \
+							<= Cons *
+								title <= cons_title @ \Consumer
+								Content <= Cons_content $mol_row
+									sub <= cons_items /
+										<= Contract $mol_labeler
+											title <= contract_title @ \Contract
+											content <= contract_id \
+										<= Pay_method $mol_labeler
+											title <= pay_method_title @ \Pay Method
+											content <= pay_method_name \
+										<= Manager $mol_labeler
+											title <= manager_title @ \Manager
+											content <= manager_name \
+										<= Debitor $mol_labeler
+											title <= debitod_title @ \Debitor
+											content <= debitor_name \
+				<= Attach_section $mol_section
+					head <= attach_title @ \Attachments
+					Content <= Attach $mol_attach
+						items <= attachments /
+						attach_new?val <=> attach_new?val null
+				<= Positions_section $mol_section
+					head <= positions_head /
+						<= positions_title @ \Positions
+						<= Cost $mol_labeler
+							title <= cost_title @ \Cost
+							content <= Cost_value $mol_cost
+								value <= cost $mol_unit_money
+									valueOf 0
+					Content <= Positions $mol_list
+						rows <= positions /
+	foot /
+		<= Actions $mol_row
+			sub <= actions /
+				<= Approve $mol_check_box
+					checked?val <=> approved?val false
+					title <= approved_title @ \Approved
+	-
+	Position!index $mol_app_supplies_position
+		position <= position!index null
+	-
+	Attachment!index $mol_attach_item
+		url_thumb <= attachment_thumb!index \
+		url_load <= attachment_load!index \
+
+$mol_app_supplies_enter $mol_view
+	entered?val false
+	sub / <= form $mol_form
+		form_fields /
+			<= loginField $mol_form_field
+				name <= loginLabel @ \User name
+				errors <= loginErrors /
+				control <= loginControl $mol_string value?val <=> login?val \
+			<= passwordField $mol_form_field
+				name <= passwordLabel @ \Pass word
+				errors <= passwordErrors /
+				control <= passControl $mol_string
+					value?val <=> password?val \
+					type \password
+		buttons /
+			<= submit $mol_button_major
+				sub / <= submitLabel @ \Log In
+				event_click?val <=> event_submit?val null
+				disabled <= submit_blocked false
+
+$mol_app_supplies $mol_book
+	-
+	enter $mol_app_supplies_enter
+		entered?val <=> entered?val false
+	-
+	List $mol_app_supplies_list
+		minimal_width 400
+		supplies <= supplies /
+		search_query?val <=> supply_id?val \
+	-
+	Detail $mol_app_supplies_detail
+		minimal_width 400
+		supply <= supply null
+		event_top?val <=> event_front_up?val -
+	-
+	placeholder $mol_book_placeholder
+		title <= title -
+
+$mol_app_supplies_demo $mol_demo_large
+	title @ \Supplies approving business process
+	sub /
+		<= App $mol_app_supplies
+			entered true
+
+$mol_app_taxon $mol_page
+	title @ \Big hierarchical table demo
+	Body <= Grid $mol_grid
+		hierarchy <= hierarchy null
+		hierarchy_col <= hierarchy_field \Butxt
+		record!id <= record!id null
+
+$mol_app_taxon_demo $mol_demo_large
+	sub /
+		<= App $mol_app_taxon
+			hierarchy_field \name
+			hierarchy <= hierarchy *
+			record!path <= record!path *
+
+$mol_app_todomvc $mol_scroll
+	title \Todos
+	sub /
+		<= Page $mol_list
+			rows /
+				<= Title $mol_view
+					minimal_height 176
+					sub /
+						<= title -
+				<= Panel $mol_list
+					rows <= panels /
+						<= Head $mol_view
+							minimal_height 64
+							sub <= Head_content /
+								<= Head_complete $mol_check
+									enabled <= head_complete_enabled false
+									checked?val <=> completed_all?val false
+									title \❯
+								<= Add $mol_app_todomvc_add
+									value?val <=> task_title_new?val \
+									event_done?event <=> event_add?event null
+						<= List $mol_list
+							rows <= task_rows /
+						<= Foot $mol_view
+							sub <= foot_content /
+								<= Pending $mol_view
+									sub /
+										<= pending_message \0 items left 
+								<= Filter $mol_bar
+									sub <= filterOptions /
+										<= Filter_all $mol_link
+											sub /
+												<= filter_all_label \All
+											arg *
+												completed null
+										<= Filter_active $mol_link
+											sub /
+												<= filter_active_label \Active
+											arg *
+												completed \false
+										<= Filter_completed $mol_link
+											sub /
+												<= filter_completed_label \Completed
+											arg *
+												completed \true
+								<= Sweep $mol_button_minor
+									enabled <= sweep_enabled true
+									event_click?event <=> event_sweep?event null
+									sub / <= sweep_label \Clear completed
+	Task_row!id $mol_app_todomvc_task_row
+		completed?val <=> task_completed!id?val false
+		title?val <=> task_title!id?val \
+		event_drop?event <=> event_task_drop!id?event null
+
+$mol_app_todomvc_add $mol_string
+	hint \What needs to be done?
+	event *
+		^
+		keyup?event <=> event_press?event null
+	event_done?event null
+
+$mol_app_todomvc_task_row $mol_view
+	minimal_height 64
+	sub /
+		<= Complete $mol_check
+			checked?val <=> completed?val false
+		<= Title $mol_string
+			hint <= title_hint \Task title
+			value?val <=> title?val \
+		<= Drop $mol_button_typed
+			sub / \✖
+			event_click?event <=> event_drop?event null
+	attr *
+		^
+		mol_app_todomvc_task_row_completed <= completed?val false
+
+$mol_app_todomvc_demo $mol_demo_large
+	sub /
+		<= App $mol_app_todomvc
+
+$mol_demo_small $mol_view
+
+$mol_attach_demo $mol_demo_small
+	title @ \Attach files an show them
+	sub /
+		<= Empty $mol_attach
+			items?val <=> empty_items?val /
+		<= Filled $mol_attach
+			items?val <=> filled_items?val /
+				<= Item1 $mol_attach_item
+					url_thumb \logo/logo.svg
+					url_load \logo/logo.svg
+				<= Item2 $mol_attach_item
+					url_thumb \logo/logo.svg
+					url_load \logo/logo.svg
+				<= Item3 $mol_attach_item
+					url_thumb \logo/logo.svg
+					url_load \logo/logo.svg
+
+$mol_bar_demo $mol_demo_small
+	title @ \Group of controls as one control
+	sub /
+		<= Two $mol_bar
+			sub /
+				<= Two_mail $mol_string
+					hint <= mail_hint \E-mail
+					value?val <=> mail?val \
+				<= Two_submit $mol_button_minor
+					title <= submit_title \Submit
+		<= Three $mol_bar
+			sub /
+				<= Three_mail $mol_string
+					hint <= mail_hint \E-mail
+					value?val <=> mail?val \
+				<= Three_confirm $mol_check_box
+					title <= confirm_title \Confirm
+					checked?val <=> confirmed?val false
+				<= Three_submit $mol_button_minor
+					title <= submit_title \Submit
+
+$mol_portion_indicator $mol_view
+	style *
+		^
+		width <= width_style \0
+
+$mol_portion $mol_view
+	portion 0
+	sub /
+		<= indicator $mol_portion_indicator
+			width_style <= indicator_width_style \0
+
+$mol_icon_sort_asc $mol_icon path \M10,11V13H18V11H10M10,5V7H14V5H10M10,17V19H22V17H10M6,7H8.5L5,3.5L1.5,7H4V20H6V7Z
+
+$mol_bench $mol_grid
+	records <= result *
+	col_sort?val \
+	-
+	Col_head!id $mol_bench_head
+		event_click?val <=> event_sort_toggle!id?val null
+		sub <= col_head_content!id /
+			<= col_head_label!id /
+			<= Col_head_sort!id $mol_icon_sort_asc
+	-
+	cell_content_number!id /
+		<= result_value!id \
+		<= Result_portion!id $mol_portion
+			portion <= result_portion!id 0
+
+
+$mol_bench_head $mol_float
+	horizontal false
+	event *
+		^
+		click?val <=> event_click?val null
+	attr *
+		^
+		title <= hint @ \Click to sort by this column
+
+$mol_bench_demo $mol_demo_small
+	title @ \Benchmarking results visualization
+	sub /
+		<= View $mol_bench
+			col_sort?val <=> col_sort?val \mid
+			result <= result *
+
+$mol_book_demo $mol_demo_large
+	title @ \Adaprive layout for various sizes of screen
+	sub /
+		<= View $mol_book
+			Placeholder <= Placeholder $mol_book_placeholder
+				minimal_width 200
+				sub / \ Placeholder
+			pages /
+				<= Addon $mol_view
+					minimal_width 250
+					sub / \ Addon
+				<= Main $mol_view
+					minimal_width 400
+					sub / \ Main
+
+$mol_button_demo $mol_demo_small
+	title @ \All types of buttons in every states
+	sub /
+		<= Major_enabled $mol_button_major
+			title <= major_label @ \Click me!
+		-
+		<= Major_disabled $mol_button_major
+			title <= major_label @ \Click me!
+			enabled false
+		-
+		<= Minor_enabled $mol_button_minor
+			title <= minor_label @ \Or click me..
+		-
+		<= Minor_disabled $mol_button_minor
+			title <= minor_label @ \Or click me..
+			enabled false
+		-
+		<= Danger_enabled $mol_button_danger
+			title <= danger_label @ \Be attentive!
+		-
+		<= Danger_disabled $mol_button_danger
+			title <= danger_label @ \Be attentive!
+			enabled false
+
+$mol_calendar $mol_list
+	sub /
+		<= Title $mol_view
+			minimal_height 24
+			sub /
+				<= title \
+		<= Weekdays $mol_view
+			sub /
+				<= weekdays /
+		<= Weeks $mol_list
+			rows /
+				<= weeks /
+	-
+	Weekday!index $mol_calendar_day
+		holiday <= weekend!index false
+		sub /
+			<= weekday!index \
+	-
+	Week!row $mol_view
+		sub / 
+			<= week_days!row /
+	-
+	Day!day $mol_calendar_day
+		ghost <= day_ghost!day false
+		holiday <= day_holiday!day false
+		selected <= day_selected!day false
+		sub <= day_content!day /
+			<= day_text!day \
+	-
+	month_string \
+	month_moment $mol_time_moment
+
+$mol_calendar_day $mol_view
+	minimal_height 32
+	minimal_width 36
+	attr *
+		mol_calendar_holiday <= holiday false
+		mol_calendar_ghost <= ghost false
+		mol_calendar_selected <= selected false
+
+$mol_calendar_demo_holiday $mol_demo_small
+	title @ \Days of month 2018-01 with custom holidays
+	holidays /
+		\2018-01-01
+		\2018-01-02
+		\2018-01-03
+		\2018-01-04
+		\2018-01-05
+		\2018-01-06
+		\2018-01-07
+		\2018-01-08
+		\2018-01-13
+		\2018-01-14
+		\2018-01-20
+		\2018-01-21
+		\2018-01-27
+		\2018-01-28
+	sub /
+		<= Calendar $mol_calendar
+			month_string <= month \2018-01
+			day_holiday!day <= holiday!day false
+			
+$mol_calendar_demo_selection $mol_demo_small
+	title @ \Days of month 2018-01 with custom selection
+	interval_config *
+		start \2018-01-10
+		end \2018-01-20
+	sub /
+		<= Calendar $mol_calendar
+			month_string <= month \2018-01
+			day_selected!day <= selected!day false
+			
+$mol_calendar_demo_simple $mol_demo_small
+	title @ \Days of curret month
+	sub /
+		<= Calendar $mol_calendar
+			month_moment <= today $mol_time_moment
+
+$mol_card_demo $mol_demo_small
+	title @ \Cards with optional status
+	sub /
+		<= Simple $mol_card
+			Content $mol_row
+				sub /
+					\Hello world!
+		<= Pending $mol_card
+			Content $mol_row
+				sub /
+					\Hello pending!
+			status \pending
+
+$mol_chart $mol_view
+	sub /
+		<= Plot $mol_plot_pane
+			graphs <= graphs /
+			gap_hor 48
+			gap_vert 24
+			hue_base?val <= hue_base 140
+			hue_shift?val <= hue_shift 111
+		<= Legend $mol_chart_legend
+			graphs <= graphs /
+
+$mol_chart_legend $mol_scroll
+	graphs /
+	sub <= graph_legends /
+	-
+	Graph_legend!id $mol_view
+		sub /
+			<= Graph_sample_box!id $mol_view
+				sub /
+					<= Graph_sample!id null
+			<= Graph_title!id $mol_view
+				sub /
+					<= graph_title!id \
+
+$mol_svg_text $mol_svg
+	dom_name \text
+	pos /
+	attr *
+		^
+		x <= pos_x \
+		y <= pos_y \
+		text-anchor <= align \middle
+	sub /
+		<= text \
+
+$mol_plot_ruler_vert $mol_plot_graph
+	front /
+	color null
+	sub /
+		<= Curve $mol_svg_path
+			geometry <= curve \
+		<= labels /
+		<= Title $mol_svg_text
+			pos <= title_pos /
+				<= title_pos_x \36px
+				<= title_pos_y \14px
+			align \end
+			sub /
+				<= title -
+	Label!index $mol_svg_text
+		pos <= label_pos!index /
+			<= label_pos_x!index <= title_pos_x -
+			<= label_pos_y!index \
+		align \end
+		text <= label_text!index \
+
+$mol_plot_ruler_hor $mol_plot_graph
+	front /
+	color null
+	sub /
+		<= Curve $mol_svg_path
+			geometry <= curve \
+		<= labels /
+		<= Title $mol_svg_text
+			pos <= title_pos /
+				<= title_pos_x \0
+				<= title_pos_y \100%
+			align \start
+			sub /
+				<= title -
+	Label!index $mol_svg_text
+		pos <= label_pos!index /
+			<= label_pos_x!index \
+			<= label_pos_y!index <= title_pos_y -
+		text <= label_text!index \
+
+$mol_plot_bar $mol_plot_graph
+	style *
+		^
+		stroke-width <= stroke_width \1rem
+	sub /
+		<= Curve $mol_svg_path
+			geometry <= curve \
+	Sample $mol_plot_graph_sample
+		color <= color -
+
+$mol_plot_group $mol_plot_graph
+	sub <= graphs_enriched <= graphs /
+	Sample $mol_plot_graph_sample
+		sub <= graph_samples /
+
+$mol_plot_line $mol_plot_graph
+	color_fill \none
+	sub /
+		<= Curve $mol_svg_path
+			geometry <= curve \
+	-
+	Sample $mol_plot_graph_sample
+		color <= color -
+		type <= type -
+
+$mol_chart_demo_simple $mol_demo_large
+	title @ \Simple chart with hadcoded series
+	sub /
+		<= Chart $mol_chart
+			graphs /
+				<= Vert_ruler $mol_plot_ruler_vert
+					title <= vert_title @ \pcs
+				<= Hor_ruler $mol_plot_ruler_hor
+					title <= hor_title @ \Month
+					series <= plan -
+					label_text!key <= hor_label_text!key \
+				<= Plan $mol_plot_bar
+					title <= plan_title @ \Plan
+					series <= plan *
+						january 10
+						february 20
+						march 30
+						april 40
+				<= Fact $mol_plot_group
+					title <= fact_title @ \Fact
+					series <= fact *
+						january 5
+						february 10
+						march 30
+					graphs /
+						<= Fact_line $mol_plot_line
+						<= Fact_dots $mol_plot_dot
+
+$mol_plot_fill $mol_plot_graph
+	front /
+	sub /
+		<= Curve $mol_svg_path
+			geometry <= curve \
+	Sample $mol_plot_graph_sample
+		color <= color -
+
+$mol_chart_demo_styles $mol_demo_large
+	title @ \Chart with various styles of graphs.
+	samples_count 15
+	sub /
+		<= Chart $mol_chart
+			graphs /
+				<= Energy $mol_plot_ruler_vert
+					title <= energy_title @ \kJ
+				<= Day $mol_plot_ruler_hor
+					title <= day_title @ \Day
+					series <= series_1 /
+				<= Receipts $mol_plot_bar
+					title <= receipts_title @ \Receipts
+					series <= series_2 /
+				<= Receipts_confirmed $mol_plot_bar
+					title <= receipts_confirmed_title @ \Confirmed receipts
+					series <= series_3 /
+				<= Maximum $mol_plot_dot
+					title <= maximum_title @ \Maximum
+					series <= series_1 /
+				<= Waste $mol_plot_line
+					type \dashed
+					title <= waste_title @ \Waste
+					series <= series_4 /
+				<= Purchases $mol_plot_group
+					title <= purchases_title @ \Purchases
+					series <= series_5 /
+					graphs /
+						<= Purchases_fill $mol_plot_fill
+						<= Purchases_line $mol_plot_line 
+						<= Purchases_dots $mol_plot_dot 
+				<= Taxes $mol_plot_group
+					title <= taxes_title @ \Taxes
+					series <= series_6 /
+					graphs /
+						<= Taxes_fill $mol_plot_fill
+						<= Taxes_line $mol_plot_line
+							type \dashed
+						<= Taxes_dots $mol_plot_dot
+
+$mol_check_box_demo $mol_demo_small
+	title @ \Checkboxes in various states
+	sub /
+		<= Labeled_base $mol_check_box
+			checked?val <=> base_checked?val false
+			title <= c1Label @ \Base
+		-
+		<= Labeled_checked $mol_check_box
+			title <= c2Label @ \Checked
+			checked?val <=> checked_checked?val true
+		-
+		<= Labeled_disabled $mol_check_box
+			title <= c6Label @ \Disabled
+			checked true
+			enabled false
+		-
+		<= Alone_base $mol_check_box
+			checked?val <=> base_checked?val false
+		-
+		<= Alone_checked $mol_check_box
+			checked?val <=> checked_checked?val true
+		-
+		<= Alone_disabled $mol_check_box
+			checked true
+			enabled false
+
+$mol_check_expand_demo $mol_demo_small
+	title @ \Checkbox-expand in various states
+	sub /
+		<= Labeled_base $mol_check_expand
+			checked?val <=> base_expanded?val false
+			title <= c1Label @ \Base
+		-
+		<= Labeled_expanded $mol_check_expand
+			title <= c2Label @ \Expanded
+			checked?val <=> expanded_expanded?val true
+		-
+		<= Empty_base $mol_check_expand
+			checked?val <=> base_expanded?val false
+		-
+		<= Empty_expanded $mol_check_expand
+			checked?val <=> expanded_expanded?val true
+		-
+		<= Disabled $mol_check_expand
+			title <= c5Label @ \Non expandable
+			disabled true
+
+$mol_check_icon $mol_check
+
+$mol_icon_microphone $mol_icon path \M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z
+
+$mol_check_icon_demo $mol_demo_small
+	title @ \Iconic checkboxes in various states
+	sub /
+		<= Base $mol_check_icon
+			Icon <= Base_icon $mol_icon_microphone
+			checked?val <=> base_checked?val false
+		-
+		<= Checked $mol_check_icon
+			Icon <= Checked_icon $mol_icon_microphone
+			checked?val <=> checked_checked?val true
+		-
+		<= Disabled $mol_check_box
+			Icon <= Disabled_icon $mol_icon_microphone
+			checked true
+			enabled false
+
+$mol_code_demo $mol_demo_small
+	title @ \Barcode scanner with various formats support
+	sub /
+		<= Qr $mol_code
+			format \QR_CODE
+		<= Matrix $mol_code
+			format \DATA_MATRIX
+		<= Upc_e $mol_code
+			format \UPC_E
+		<= Upc_a $mol_code
+			format \UPC_A
+		<= Ean_8 $mol_code
+			format \EAN_8
+		<= Ean_13 $mol_code
+			format \EAN_13
+		<= Code_128 $mol_code
+			format \CODE_128
+		<= Code_39 $mol_code
+			format \CODE_39
+		<= Itf $mol_code
+			format \ITF
+
+$mol_date $mol_pop
+	Anchor <= Input $mol_string
+		value?val <=> value?val \
+		hint <= hint \YYYY-MM-DD
+		length_max 10
+	-
+	bubble_content /
+		<= Calendar $mol_date_calendar
+			month_string <= value -
+			day_selected!day <= day_selected!day false
+			day_click!day?event <=> day_click!day?event null
+	-
+	value_number?val NaN
+	value_moment?val $mol_time_moment
+
+$mol_date_calendar $mol_calendar
+	day_content!day /
+		<= Day_button!day $mol_button_typed
+			title <= day_text!day -
+			event_click?event <=> day_click!day?event null
+
+$mol_date_demo $mol_demo_small
+	sub /
+		<= View $mol_view
+			sub /
+				<= Date $mol_date
+					value_moment?val <=> date?val $mol_time_moment
+				<= Formatted $mol_view
+					sub /
+						<= formatted \
+
+$mol_deck_demo $mol_demo_small
+	title @ \Simple deck with tabbar
+	sub /
+		<= Deck $mol_deck items /
+			<= greeterItem *
+				title <= greeterLabel @ \Greeting
+				Content <= greeterContent $mol_row
+					sub /
+						<= greeterMessager $mol_view sub /
+							<= greeterMessage @ \Hello, world!
+			<= questerItem *
+				title <= questerLabel @ \Question
+				Content <= questerContent $mol_row
+					sub /
+						<= questerMessager $mol_view sub /
+							<= questerMessage @ \How are you?
+			<= commanderItem *
+				title <= commanderLabel @ \Command
+				Content <= commanderContent $mol_row
+					sub /
+						<= commanderMessager $mol_view sub /
+							<= commanderMessage @ \Let us do it right!
+
+$mol_dimmer_demo $mol_demo_small
+	title @ \Text with highlighted found substring
+	sub /
+		<= one $mol_dimmer
+			haystack \Don't put all your eggs in one basket
+			needle \eggs
+		<= two $mol_dimmer
+			haystack \Don't look a gift horse in the mouth.
+			needle \oo
+		<= three $mol_dimmer
+			haystack \There is no word you are looking for
+			needle \luck
+		<= four $mol_dimmer
+			haystack \ooAAooAAoo
+			needle \oo
+		<= five $mol_dimmer
+			haystack \Let's search this string
+			needle \Let's search this string
+		<= six $mol_dimmer
+			haystack \Let's search nothing
+			needle \
+
+$mol_expander $mol_list
+	rows /
+		<= Label $mol_view
+			sub /
+				<= Trigger $mol_check_expand
+					checked?val <=> expanded?val false
+					label <= label /
+						<= title -
+				<= tools /
+		<= Content $mol_view
+			sub <= content /
+
+$mol_filler $mol_view
+	minimal_height 500
+	sub /
+		\Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.
+		\Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
+		\Suspendisse lectus leo, consectetur in tempor sit amet, placerat quis neque. Etiam luctus porttitor lorem, sed suscipit est rutrum non. Curabitur lobortis nisl a enim congue semper. Aenean commodo ultrices imperdiet. Vestibulum ut justo vel sapien venenatis tincidunt. Phasellus eget dolor sit amet ipsum dapibus condimentum vitae quis lectus. Aliquam ut massa in turpis dapibus convallis. Praesent elit lacus, vestibulum at malesuada et, ornare et est. Ut augue nunc, sodales ut euismod non, adipiscing vitae orci. Mauris ut placerat justo. Mauris in ultricies enim. Quisque nec est eleifend nulla ultrices egestas quis ut quam. Donec sollicitudin lectus a mauris pulvinar id aliquam urna cursus. Cras quis ligula sem, vel elementum mi. Phasellus non ullamcorper urna.
+		\Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In euismod ultrices facilisis. Vestibulum porta sapien adipiscing augue congue id pretium lectus molestie. Proin quis dictum nisl. Morbi id quam sapien, sed vestibulum sem. Duis elementum rutrum mauris sed convallis. Proin vestibulum magna mi. Aenean tristique hendrerit magna, ac facilisis nulla hendrerit ut. Sed non tortor sodales quam auctor elementum. Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel.
+		\Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.
+		\Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
+		\Suspendisse lectus leo, consectetur in tempor sit amet, placerat quis neque. Etiam luctus porttitor lorem, sed suscipit est rutrum non. Curabitur lobortis nisl a enim congue semper. Aenean commodo ultrices imperdiet. Vestibulum ut justo vel sapien venenatis tincidunt. Phasellus eget dolor sit amet ipsum dapibus condimentum vitae quis lectus. Aliquam ut massa in turpis dapibus convallis. Praesent elit lacus, vestibulum at malesuada et, ornare et est. Ut augue nunc, sodales ut euismod non, adipiscing vitae orci. Mauris ut placerat justo. Mauris in ultricies enim. Quisque nec est eleifend nulla ultrices egestas quis ut quam. Donec sollicitudin lectus a mauris pulvinar id aliquam urna cursus. Cras quis ligula sem, vel elementum mi. Phasellus non ullamcorper urna.
+		\Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In euismod ultrices facilisis. Vestibulum porta sapien adipiscing augue congue id pretium lectus molestie. Proin quis dictum nisl. Morbi id quam sapien, sed vestibulum sem. Duis elementum rutrum mauris sed convallis. Proin vestibulum magna mi. Aenean tristique hendrerit magna, ac facilisis nulla hendrerit ut. Sed non tortor sodales quam auctor elementum. Donec hendrerit nunc eget elit pharetra pulvinar. Suspendisse id tempus tortor. Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. Donec vel.
+
+$mol_expander_demo $mol_demo_small
+	title @ \Simple spoiler
+	sub /
+		<= Expander $mol_expander
+			title \Lorem Ipsum
+			Content $mol_filler
+	
+
+$mol_float_demo $mol_demo_large
+	title @ \Floating header example
+	sub /
+		<= Scroll $mol_scroll
+			sub /
+				<= Head $mol_float
+					sub /
+						<= Head_card $mol_card
+							sub /
+								<= Head_row $mol_row
+									sub /
+										<= Head_content $mol_view
+											sub /
+												\Float header
+				<= content /
+					<= Content $mol_row sub /
+						<= Filler1 $mol_filler
+						<= Filler2 $mol_filler
+
+$mol_form_demo $mol_demo_small
+	sub /
+		<= Form $mol_form
+			title @ \Simple sign in form
+			form_fields /
+				<= loginField $mol_form_field
+					name <= loginLabel @ \Login
+					errors <= loginErrors /
+					control <= loginControl $mol_string value?val <=> login?val \
+				<= passwordField $mol_form_field
+					name <= passwordLabel @ \Password
+					errors <= passwordErrors /
+					control <= passControl $mol_string
+						value?val <=> password?val \
+						type \password
+			submit_blocked => submit_blocked
+			buttons /
+				<= submit $mol_button_major
+					sub / <= submit_text @ \Sign In
+					event_click?val <=> event_submit?val null
+					disabled <= submit_blocked -
+
+$mol_grid_demo $mol_demo_large
+	title @ \Grid with large count of cells
+	sub /
+		<= Grid $mol_grid
+			row_height 37
+			records <= records *
+			col_head_content!col <= col_head_content!col /
+
+$mol_icon_demo $mol_demo_small
+	title @ \All $mol icons
+	sub <= icons /
+
+$mol_labeler_demo $mol_demo_small
+	title @ \Labeled content of some types
+	sub /
+		<= Provider $mol_labeler
+			title \Provider
+			content \ACME Provider Inc.
+		<= Name $mol_labeler
+			title \User name
+			Content <= Name_control $mol_string
+				hint \Jack Sparrow
+				value?val <=> user_name?val \
+
+$mol_link_demo $mol_demo_small
+	title @ \Some hyperlinks
+	sub /
+		<= This $mol_link
+			sub /
+				<= this_label @ \This page
+		<= Red $mol_link
+			arg * color \red
+			sub /
+				<= red_label @ \Red
+		<= Green $mol_link
+			arg * color \green
+			sub /
+				<= green_label @ \Green
+		<= Blue $mol_link
+			arg * color \blue
+			sub /
+				<= blue_label @ \Blue
+		<= External $mol_link
+			uri \http://example.org
+			title \example.org
+			hint <= external_hint @ \external link
+
+$mol_link_iconed $mol_link
+	sub /
+		<= Icon $mol_image
+			uri <= icon \
+		<= content /
+			<= title <= uri -
+	host \
+
+$mol_link_iconed_demo $mol_demo_small
+	title @ \Link with icon
+	sub /
+		<= Input $mol_string
+			value?val <=> name?val \https://www.google.com/search?q=%24mol
+		<= Output $mol_link_iconed
+			uri <= name?val -
+			
+$mol_list_demo $mol_demo_large
+	title @ \Large list of rows with dynamic content
+	sub /
+		<= Scroll $mol_scroll
+			sub /
+				<= List $mol_list
+					rows <= rows /
+	Row!id $mol_expander
+		title <= row_text!id \
+		content /
+			<= Content!id $mol_filler
+			
+$mol_map_yandex $mol_view
+	zoom?val 2
+	center?val /
+		0
+		0
+	objects /
+
+$mol_map_yandex_mark $mol_object
+	pos /
+		0
+		0
+	hint \
+	title \
+	content \
+	
+$mol_map_yandex_demo $mol_demo_large
+	title @ \Simple Yandex Maps wrapper
+	sub /
+		<= Map $mol_map_yandex
+			center?val <=> center?val /
+				59.9
+				30.3
+			zoom?val <=> zoom?val 10
+			objects /
+				<= Place $mol_map_yandex_mark
+					pos <= place_pos /
+						59.9
+						30.3
+					title <= place_title \Saint-Petersburg
+					content <= place_content \It is Russia's second-largest city after Moscow
+
+$mol_message $mol_view
+	moment $mol_time_moment
+	sub /
+		<= Info $mol_row
+			sub /
+				<= Name $mol_view
+					sub /
+						<= name \ 
+				<= Moment $mol_view
+					sub /
+						<= moment_string \
+		<= Avatar_link $mol_link
+			uri <= avatar_link \
+			sub /
+				<= Avatar $mol_image
+					title \
+					uri <= avatar \
+		<= Text $mol_text
+			text <= text \
+
+$mol_message_demo $mol_demo_small
+	title @ \Generic user message
+	sub /
+		<= Message_short $mol_message
+			name \Jin
+			moment $mol_time_moment
+			avatar \https://avatars3.githubusercontent.com/u/442988?v=4
+			avatar_link \https://github.com/nin-jin
+			text \Hello, **everybody!**
+		<= Message_long $mol_message
+			name \Great Teacher Onizuka
+			moment $mol_time_moment
+			avatar_link \https://en.wikipedia.org/wiki/Great_Teacher_Onizuka
+			text \The story focuses on 22-year-old ex-[bōsōzoku](https://en.wikipedia.org/wiki/Bōsōzoku) member Eikichi Onizuka, who becomes a teacher at a private middle school, Holy Forest Academy, in [Tokyo](https://en.wikipedia.org/wiki/Tokyo), [Japan](https://en.wikipedia.org/wiki/Japan). It won the 1998 [Kodansha Manga Award](https://en.wikipedia.org/wiki/Kodansha_Manga_Award) for shōnen and is a continuation of Tohru Fujisawa's other manga series [Shonan Junai Gumi](https://en.wikipedia.org/wiki/Shonan_Junai_Gumi) (lit. "Shōnan True Love Group") and Bad Company, both of which focus on the life of Onizuka before he becomes a teacher in Great Teacher Onizuka.
+
+$mol_meter_demo $mol_demo_small
+	title @ \Real time offset and size metering
+	plugins /
+		<= Meter $mol_meter
+			top => top
+			height => height
+	sub /
+		<= Top $mol_view
+			sub /
+				\Offset from top: 
+				<= top -
+		<= Height $mol_view
+			sub /
+				\Component height: 
+				<= height -
+
+$mol_nav_demo $mol_demo_small
+	title @ \Keyboard navigation demo
+	sub /
+		<= Labeler $mol_labeler
+			title \Focus me and navigate (arrows up & down)!
+			content /
+				<= Button $mol_button_minor
+					title?val <= selected_item?val \Click!
+			plugins /
+				<= Nav $mol_nav
+					keys_y <= items /
+						\Item 1
+						\Item 2
+						\Item 3
+						\Item 4
+						\Item 5
+						\Item 6
+						\Item 7
+					current_y?val <=> selected_item?val -
+
+$mol_number_demo $mol_demo_small
+	title @ \Number input control with various configuration
+	sub /
+		<= zero $mol_number
+		<= one $mol_number
+			value?val <=> year?val NaN
+		<= two $mol_number
+			value?val <=> year?val NaN
+			hint \2016
+		<= three $mol_number
+			value?val <=> age?val 32
+			hint \18-99
+			enabled false
+		<= four $mol_number
+			value?val <=> year?val NaN
+			string_enabled false
+		<= five $mol_number
+			value?val <=> age?val 32
+			dec_enabled false
+		<= six $mol_number
+			value?val <=> year?val NaN
+			inc_enabled false
+		<= seven $mol_number
+			value?val <=> year?val NaN
+			precision_change 10
+		<= eight $mol_number
+			value?val <=> year?val NaN
+			precision_view 0.01
+		<= nine $mol_number
+			value?val <=> year?val NaN
+			precision 1000
+
+$mol_page_demo $mol_demo_large
+	title @ \Page with header, body and footer
+	sub /
+		<= Page $mol_page
+			tools /
+				<= Button $mol_button_minor
+					title \Toolbar Button
+			body /
+				<= Content $mol_row
+					sub /
+						<= Text $mol_filler
+			foot /
+				<= Foot_content $mol_row
+					sub /
+						<= Foot_text $mol_view
+							sub /
+								\Footer
+
+$mol_plot_demo $mol_demo_large
+	title @ \Dynamic lightweight graphs
+	count?val 20
+	sub /
+		<= Plot $mol_plot_pane
+			gap 48
+			graphs /
+				<= Saturation $mol_plot_group
+					series <= saturation_series /
+					graphs /
+						<= Saturation_fill $mol_plot_fill
+						<= Saturation_line $mol_plot_line
+							type \dashed
+				<= Input $mol_plot_group
+					series <= input_series /
+					graphs /
+						<= Input_line $mol_plot_line
+						<= Input_dots $mol_plot_dot
+				<= Output $mol_plot_bar
+					series <= output_series /
+				<= Voltage $mol_plot_ruler_vert
+					title <= Voltage_title @ \V
+				<= Time $mol_plot_ruler_hor
+					title <= Time_title @ \ms
+					series <= output_series /
+
+$mol_pop_demo $mol_demo_small
+	title @ \Pop up block with various alignment
+	sub /
+		<= Pop $mol_pop
+			Anchor <= Show $mol_button_minor
+				title <= show_text @ \?
+			showed <= showed <= focused -
+			bubble_content /
+				<= Content $mol_row 
+					sub / 
+						<= bubble_hint @ \This is $mol_pop
+
+$mol_pop_over $mol_pop
+	showed <= hovered?val false
+	attr *
+		^
+		tabindex 0
+	event *
+		^
+		mouseenter?event <=> event_show?event null
+		mouseleave?event <=> event_hide?event null
+
+$mol_pop_over_demo $mol_demo_small
+	title @ \Menu that opens on mouse over
+	sub /
+		<= Menu $mol_row
+			sub /
+				<= File $mol_pop_over
+					align \bottom_right
+					Anchor <= file_title @ \File
+					bubble_content /
+						<= File_menu $mol_list
+							rows /
+								<= Open $mol_button_minor
+									title <= open_title @ \Open
+								<= Export $mol_button_minor
+									title <= export_title @ \Export
+								<= Save $mol_button_minor
+									title <= save_title @ \Save
+				<= Help $mol_pop_over
+					align \bottom_right
+					Anchor <= help_title @ \About
+					bubble_content /
+						<= Help_menu $mol_list
+							rows /
+								<= Updates $mol_button_minor
+									title <= updates_title @ \Updates
+								<= About $mol_button_minor
+									title <= about_title @ \About
+
+$mol_portion_demo $mol_demo_small
+	title @ \Progress bar in various states
+	sub /
+		<= Empty $mol_portion
+			portion <= fist 0
+		<= Partial $mol_portion
+			portion <= second 0.5
+		<= Full $mol_portion
+			portion <= third 1
+
+$mol_row_demo $mol_demo_small
+	title @ \Some controls in one row with equal paddings and wrapping support
+	sub /
+		<= Row $mol_row
+			sub /
+				<= Name $mol_search
+					hint <= name_hint @ \Jack Sparrow
+					query?val <=> name?val \
+					suggests /
+						<= suggest1 @ \Jack Sparrow
+						<= suggest2 @ \Bruce Wayne
+				<= Count $mol_number
+					hint <= count_hint @ \Count
+					value?val <=> count?val null
+				<= Progress $mol_portion
+					portion <= progress 0.33
+				<= Publish $mol_check_box
+					title <= publish_label @ \Shared
+					checked?val <=> publish?val false
+				<= Drop $mol_button_minor
+					title <= drop_title @ \Drop
+
+$mol_scroll_demo $mol_demo_large
+	title @ \Simple scroll pane
+	sub /
+		<= Scroll $mol_scroll
+			sub /
+				<= One $mol_filler
+				<= Two $mol_filler
+				<= Tree $mol_filler
+
+$mol_search_demo $mol_demo_small
+	title @ \Simple search field with suggest 
+	sub /
+		<= Search $mol_search
+			query => query
+			suggests <= suggests /
+
+$mol_section_demo $mol_demo_large
+	title @ \Section with header
+	sub /
+		<= Section $mol_section
+			head \Section header
+			Content $mol_filler
+
+$mol_select_demo_colors $mol_demo_small
+	title @ \Color picker with filter and custom rows
+	sub /
+		<= Color $mol_select
+			value?val <=> color?val \
+			dictionary <= colors *
+			option_label!id <= color_name!id \
+			option_content!id <= option_content!id /
+				<= Color_option!id $mol_row
+					sub /
+						<= Color_preview!id $mol_select_colors_color_preview
+							color <= option_color!id \
+						<= color_name!id \
+					minimal_height 40
+
+$mol_select_colors_color_preview $mol_view
+	style *
+		^
+		background <= color \
+
+$mol_select_demo_month $mol_demo_small
+	title @ \Month picker with filter
+	sub /
+		<= Month $mol_select
+			no_options_message \Not found
+			value?val <=> month?val \jan
+			dictionary <= months *
+				jan \January
+				feb \February
+				mar \March
+				apr \April
+				may \May
+				jun \June
+				jul \July
+				aug \August
+				sep \September
+				oct \October
+				nov \November
+				dec \December
+
+$mol_select_demo_priority $mol_demo_small
+	title @ \Priority picker
+	sub /
+		<= Priority $mol_select
+			Filter null
+			value?val <=> priority?val \Lowest
+			options /
+				\Highest 
+				\High
+				\Medium
+				\Low
+				\Lowest
+
+$mol_speck $mol_view
+	sub /
+		<= value null
+
+$mol_icon_settings $mol_icon path \M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z
+
+$mol_icon_menu $mol_icon path \M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z
+
+$mol_speck_demo $mol_demo_small
+	sub /
+		<= Link $mol_link
+			sub /
+				<= Link_speck $mol_speck
+					value \β
+				<= Link_icon $mol_icon_settings
+		<= String $mol_view
+			sub /
+				<= String_speck $mol_speck
+					value <= string_speck @ \new
+				<= String_field $mol_string
+		<= Button $mol_button_minor
+			sub /
+				<= Button_speck $mol_speck
+					value <= notification_count 8
+				<= Button_icon $mol_icon_menu
+		<= Card $mol_card
+			content /
+				<= Card_speck $mol_speck
+			status <= card_status @ \Created
+
+$mol_speech_demo $mol_demo_small
+	sub /
+		<= Toggle $mol_check_icon
+			Icon <= Toggle_icon $mol_icon_microphone
+			checked?val <=> listening?val false
+		<= Message $mol_view
+			sub /
+				<= message \
+		
+
+$mol_string_demo $mol_demo_small
+	title @ \String input field in various states
+	sub /
+		<= Simple $mol_string
+			value?val <=> name?val \
+		<= Hint $mol_string
+			hint \Batman
+			value?val <=> name?val \
+		<= Filled $mol_string
+			value?val <=> name2?val \Jocker
+		<= Disabled $mol_string
+			disabled true
+			value?val <=> name2?val -
+
+$mol_switch_demo $mol_demo_small
+	title @ \Color switchers in various state
+	sub /
+		<= Enabled $mol_switch
+			value?val <=> color?val \red
+			options *
+				red <= option_red @ \Red
+				green <= option_green @ \Green
+				blue <= option_blue @ \Blue
+		<= Disabled $mol_switch
+			value?val <=> color?val \red
+			enabled false
+			options *
+				red <= option_red @ \Red
+				green <= option_green @ \Green
+				blue <= option_blue @ \Blue
+
+$mol_text_demo $mol_demo_large
+	title @ \Markdow visualization example
+	sub /
+		<= Scroll $mol_scroll
+			sub /
+				<= Text $mol_text text \
+					\# [Benchmarks](app/bench)
+					\## Benchmark 1
+					\### Benchmark 1.1
+					\#### Benchmark 1.1.1
+					\##### Benchmark 1.1.1.1
+					\
+					\* [$mol_app_bench_list](app/bench/list) - Frameworks comparison ([online](http://eigenmethod.github.io/mol/app/bench/#becnh=list#sort=fill#))
+					\* [ToDoMVC benchmark](https://github.com/eigenmethod/todomvc/tree/master/benchmark) ([online](http://eigenmethod.github.io/mol/app/bench/#bench=http:%2F%2Feigenmethod.github.io%2Ftodomvc%2Fbenchmark%2F#sample=angular2%7Eangularjs%7Eknockoutjs%7Emol%7Epolymer%7Ereact-alt%7Evanillajs%7Evue#sort=fill#))
+					\* [WebPageTest - Loading progress of ToDOMVC applications on some frameworks](https://www.webpagetest.org/video/compare.php?tests=161217_V8_6RFK%2C161217_G9_6RFM%2C161217_YZ_6RFN%2C161217_DM_6RFP%2C161217_2B_6RFQ%2C161217_RJ_6RFR%2C161217_2R_6RFS%2C161217_H5_6RFT%2C161217_CW_6RFV&thumbSize=150&ival=100&end=all)
+					\* [Line charts comparison](app/bench/chart/rope) ([online](http://eigenmethod.github.io/mol/app/bench/#bench=chart%2Frope%2F/sort=fill/sample=hcharts~mol))
+					\* [Bar charts comparison](app/bench/chart/bar) ([online](http://eigenmethod.github.io/mol/app/bench/#bench=chart%2Fbar%2F/sort=fill/sample=hcharts~mol))
+					\
+					\# Quick start
+					\
+					\**Create MAM project**
+					\
+					\Easy way is checkout [this preconfigured ~~PMS~~MAM repository](http://github.com/eigenmethod/mam/) and start dev server:
+					\
+					\```sh
+					\git clone https://github.com/eigenmethod/mam.git ./mam && cd mam
+					\npm start
+					\```
+					\
+					\|           | **Column 1** | **Column 2** | **Column 3**
+					\|-----------|--------------|--------------|---------
+					\| **Row 1** | Cell 1x1     | Cell 2x1     | Cell 3x1
+					\| **Row 2** | Cell 1x2     | Cell 2x2     | Cell 3x2
+					\| **Row 3** | Cell 1x3     | Cell 2x3     | Cell 3x3
+					\| **Row 4** | Cell 1x4     | Cell 2x4     | Cell 3x4
+					\| **Row 5** | Cell 1x5     | Cell 2x5     | Cell 3x5
+					\| **Row 6** | Cell 1x6     | Cell 2x6     | Cell 3x6
+					\| **Row 7** | Cell 1x7     | Cell 2x7     | Cell 3x7
+					\| **Row 8** | Cell 1x8     | Cell 2x8     | Cell 3x8
+					\| **Row 9** | Cell 1x9     | Cell 2x9     | Cell 3x9
+					\
+					\Build status: [![Build Status](https://travis-ci.org/eigenmethod/mol.svg?branch=master)](https://travis-ci.org/eigenmethod/mol)
+					\
+
+$mol_icon_source $mol_icon path \M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z
+
+$mol_app_studio $mol_book
+	value_overrided!id?val null
+	-
+	pages /
+		<= Preview_page $mol_page
+			title <= preview_title @ \Preview: 
+			tools /
+				<= Source_link $mol_link
+					sub /
+						<= Source_icon $mol_icon_source
+					arg <= source_arg *
+						source \
+				<= Edit $mol_link
+					sub /
+						<= Edit_icon $mol_icon_settings
+					arg *
+						path \
+						source null
+				<= tools_main /
+			body /
+				<= Selector $mol_app_studio_selector
+					sub /
+						<= Block $mol_view
+					path?val <=> path?val /
+			minimal_width 400
+		<= Editor_page $mol_page
+			plugins /
+				<= Speech_filter $mol_speech
+					event_catch?val <=> speech_filter?val null
+					patterns <= speech_filter_patterns /
+						\find (.+?)
+			title <= editor_title @ \Properties
+			event_top?val <=> event_front_up?val -
+			Tools => Editor_tools
+			head /
+				<= Crumbs $mol_view
+					sub <= crumbs /
+				<= Editor_tools -
+			tools /
+				- <= Speech_toggle $mol_check_icon
+					Icon <= Speech_toggle_icon $mol_icon_microphone
+					checked?val <=> speech_enabled?val false
+					hint <= speech_toggle_hint @ \Speech contol
+				<= Editor_close $mol_link
+					sub /
+						<= Editor_close_icon $mol_icon_cross
+					arg <= editor_close_arg *
+						path null
+			body /
+				<= Filter $mol_search
+					hint <= filter_hint @ \Filter properties
+					query?val <=> prop_filter?val \
+				<= Fields $mol_list
+					rows <= fields /
+					Empty <= Prop_add $mol_button_major
+						event_click?val <=> event_add?val null
+						title <= prop_add_label @ \Add this property
+			minimal_width 400
+		<= Source_page $mol_page
+			title <= source_title @ \Source code
+			minimal_width 400
+			tools /
+				<= Source_close $mol_link
+					sub /
+						<= Source_close_icon $mol_icon_cross
+					arg <= source_close_arg *
+						source null
+			body /
+				<= Source $mol_text
+					text <= source \
+	Placeholder null
+	-
+	Crumb!index $mol_link
+		title <= crumb_title!index \
+		arg *
+			path <= crumb_path!index \
+	-
+	Prop!id $mol_app_studio_field
+		path <= prop_path!id /
+		prop!path?val <=> prop_default!path?val $mol_tree
+		props!name?val <=> props_all!name?val $mol_tree
+		prop_arg!id <= prop_arg!id *
+		prop_value!id <= prop_value_base!id null
+		bind_options <= prop_options /
+		object_options <= view_options /
+		prop_add?val <=> prop_add?val \
+	-
+	class_name_self?val \App
+	class_name_base?val \$mol_view
+	class_self?val $mol_tree
+	classes $mol_tree
+
+$mol_app_studio_selector $mol_demo_large
+	event *
+		contextmenu?event <=> select?event null
+		dblclick?event <=> select?event null
+	path?val /
+
+$mol_app_studio_field $mol_expander
+	path /
+	Trigger $mol_app_studio_field_title
+		checked?val <=> expanded?val false
+		title <= title -
+		type <= type -
+	tools /
+		- <= Title $mol_app_studio_field_title
+			title <= title -
+			type <= type?val \null
+		<= Type $mol_select
+			value?val <=> type?val \null
+			hint <= type_hint @ \Type...
+			Trigger_icon null
+			dictionary <= types *
+				get \<=
+				bind \<=>
+				object \Object
+				string \Text
+				locale \Localization
+				number \Number
+				bool \Flag
+				list \List
+				dict \Dictionary
+				null \None
+		<= Object $mol_select
+			value?val <=> class?val null
+			options <= object_options /
+			hint <= object_hint @ \Class...
+			Trigger_icon null
+	content /
+		<= Bool $mol_switch
+			value?val <=> value_bool?val null
+			options *
+				true \True
+				false \False
+		<= Number $mol_number
+			value?val <=> value_number?val NaN
+			hint <= hint \
+		<= String $mol_string
+			value?val <=> value_string?val null
+			hint <= hint \
+		<= Bind $mol_select
+			value?val <=> bind?val null
+			options <= bind_options /
+			hint <= bind_hint @ \Property..
+			No_options <= Prop_add $mol_button_minor
+				title <= prop_add_label @ \Add property
+				event_click?val <=> event_prop_add?val null
+			Trigger_icon null
+		<= List $mol_list
+			rows /
+				<= list_rows /
+				<= Add $mol_select
+					hint <= add_hint @ \Add item..
+					value?val <=> add_item?val \
+					dictionary <= item_types *
+						get \<=
+						string \Text
+						number \Number
+						bool \Flag
+						list \List
+						dict \Dictionary
+						null \None
+					Trigger_icon <= List_trigger_icon $mol_icon_plus
+		<= Dict $mol_list
+			rows /
+				<= pairs /
+				<= Add_pair $mol_bar
+					sub /
+						<= Add_pair_key $mol_search
+							hint <= add_pair_hint @ \Add key..
+							query?val <=> add_pair_key?val \
+							suggests <= key_suggests /
+						<= Add_pair_submit $mol_button_minor
+							event_click?val <=> add_pair?val \
+							sub /
+								<= Add_pair_submit_icon $mol_icon_plus
+		<= Overs $mol_list
+			rows /
+				<= overs /
+				<= Add_over $mol_select
+					hint <= add_over_hint @ \Add override..
+					value?val <=> add_over?val \
+					Trigger_icon <= Overs_trigger_icon $mol_icon_plus
+					options <= over_options /
+	Prop!id $mol_app_studio_field
+		path <= prop_path!id /
+		prop_arg!id <= prop_arg!id *
+		prop!path?val <=> prop!path?val $mol_tree
+		props!name?val <=> props!name?val $mol_tree
+		prop_value!id <= prop_value!id null
+		bind_options <= bind_options /
+		prop_add?val <=> prop_add?val null
+		object_options <= object_options /
+
+$mol_app_studio_field_title $mol_check_expand
+	attr *
+		^
+		mol_app_studio_field_title_type <= type \null
+
+$mol_status $mol_view
+	status null
+	minimal_height 24
+	minimal_width 0
+	sub /
+		<= message \
+
+$mol_app_demo $mol_book
+	title \$mol
+	source_prefix \https://github.com/eigenmethod/mol/tree/master/
+	Placeholder $mol_app_demo_placeholder
+		title <= title -
+	pages <= blocks /
+	Menu $mol_app_demo_menu
+		hierarchy <= nav_hierarchy null
+		option!id <= nav_option!id null
+		filter?val <=> filter_string?val \
+	Detail $mol_app_demo_detail
+		minimal_width 600
+		title <= title -
+		source_link <= source_link \
+		body /
+			<= Detail_list $mol_list
+				rows <= main_content /
+			- <= Chat $mol_chat
+				repository_name \nin-jin/mol_chat
+				title <= title -
+				link <= chat_link \
+		event_top?val <=> event_front_up?val -
+	Editor!id $mol_app_studio
+		minimal_width 1000
+		title <= title -
+		class_name_base <= selected_class_name \
+		tools_main /
+			<= Close $mol_link
+				sub /
+					<= Close_icon $mol_icon_cross
+				arg <= close_arg *
+					edit null
+	Welcome $mol_scroll
+		sub /
+			<= Welcome_text $mol_text
+				text <= welcome_text \
+	Detail_empty_message $mol_status
+		sub /
+			<= detail_empty_prefix @ \No one demo with prefix "
+			<= selected \
+			<= detail_empty_postfix @ \"
+			
+$mol_app_demo_menu $mol_page
+	minimal_width 240
+	title @ \$mol demonstrations
+	sub /
+		<= Head -
+		<= Filter $mol_search
+			query?val <=> filter?val \
+		<= Nav $mol_app_demo_nav
+			hierarchy <= hierarchy null
+			record!id <= option!id null
+			needle <= filter?val \
+		
+$mol_app_demo_detail $mol_page
+	tools /
+		<= Source_link $mol_link
+			sub /
+				<= Source_icon $mol_icon_source
+			uri <= source_link \
+			target \_blank
+		<= Edit $mol_link
+			sub /
+				<= Edit_speck $mol_speck
+					value \β
+				<= Edit_icon $mol_icon_settings
+			arg *
+				edit \
+				path \
+		<= Close $mol_link 
+			sub /
+				<= Close_icon $mol_icon_cross
+			arg <= close_arg *
+				demo null
+
+$mol_app_demo_nav $mol_grid
+	row_height 40
+	hierarchy_col \title
+	Head null
+	-
+	Option!id $mol_link
+		uri <= link!id \
+		sub /
+			<= Expand!id $mol_check_expand
+				expanded?val <=> cell_expanded!id?val -
+				level <= cell_level!id -
+			<= Content!id $mol_view
+				sub /
+					<= cell_content!id -
+			<= Chevron!id $mol_icon_chevron
+
+$mol_app_demo_placeholder $mol_book_placeholder
+	sub /
+		<= Content $mol_card
+			content /
+				<= Title $mol_view
+					sub /
+						<= title \$mol
+				<= Description $mol_view
+					sub /
+						<= description @ \Reactive micro-modular ui framework. Very simple, but very powerful! $mol has small size of code, reactive architecture, components with adaptive design, that can be easily configured.
+				<= Advantages $mol_view
+					sub /
+						<= Technology $mol_app_placeholder_advantage
+							image \-/mol/app/demo/placeholder/technology.svg
+							title <= technology @ \Flexible adaptive interface
+						<= Code $mol_app_placeholder_advantage
+							image \-/mol/app/demo/placeholder/code_rate.svg
+							title <= code_rate @ \Quick and easy development
+						<= Programming $mol_app_placeholder_advantage
+							image \-/mol/app/demo/placeholder/programming.svg
+							title <= programming @ \High-speed applications
+				<= Github_link $mol_link_iconed
+					uri \https://github.com/eigenmethod/mol
+
+$mol_app_placeholder_advantage $mol_view
+	sub /
+		<= Image $mol_image
+			uri <= image \
+		<= title \

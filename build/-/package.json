@@ -1,0 +1,18 @@
+{
+  "name": "mol_build",
+  "version": "0.0.0",
+  "main": "node.js",
+  "dependencies": {
+    "path": "*",
+    "fs": "*",
+    "jsdom": "*",
+    "child": "*",
+    "typescript": "*",
+    " ": "*",
+    "postcss": "*",
+    "express": "*",
+    "portastic": "*",
+    "compression": "*",
+    "serve-index": "*"
+  }
+}

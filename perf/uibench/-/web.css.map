@@ -1,0 +1,16 @@
+{
+	"version": 3,
+	"sources": [
+		"../../../view/view.css",
+		"../../../scroll/scroll.view.css",
+		"../../../list/list.view.css"
+	],
+	"names": [],
+	"mappings": "AAAA;IACC,8GAA8G;IAC9G,yBAAyB;IACzB,yBAAyB;IACzB,sBAAuB;CACvB;AAED;IACC,mBAAoB;CACpB;AAED;IACC,UAAU;IACV,WAAW;IACX,YAAY;IACZ,aAAa;IACb,uBAAuB;IACvB,qGAA2B;IAC3B,mBAAkC;CAClC;AAED;IACC;;;;;;GAME;IACF,2BAA2B;IAC3B,YAAa;CACb;AACD;IACC,gBAAiB;CACjB;AAED;IACC;QACC,gBAAiB;KACjB;CACD;AAED;IACC;QACC,wBAAyB;KACzB;IACD;QACC,4BAA6B;KAC7B;CACD;AAED;IACE;;;;;;GAMC;IACF,2BAA2B;IAC3B,qFAAsF;CACtF;AAED;IACE,gBAAiB;CAClB;ACjED;IACC,eAAe;IACf,eAAe;IACf,eAAe;IACf,4BAAoB;QAApB,oBAAoB;IACpB,uBAAuB;IACvB,6BAA6B;IAC7B,yBAAyB;IAAC,sCAAsC;IAChE,+CAA0C;IAC1C,iBAAiB;IACjB,gBAAgB;IAChB,iCAAkC;CAClC;AAED,6BAA6B;AAC7B;IACC,gBAAiB;CACjB;AAED;IACC,wBAAyB;CACzB;AAED;IACC;QACC,iBAAkB;KAClB;CACD;AAED;IACC,mBAAmB;IACnB,eAAe;IACf,aAAa;IACb,aAAa;IACb,WAAW;IACX,gBAAiB;CACjB;ACpCD;IACC,sBAAsB;IACtB,cAAe;CACf",
+	"file": "web.css",
+	"sourcesContent": [
+		"[mol_view] {\n\ttransition-property: background-color, height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\t-webkit-appearance: none;\n\tword-break: break-word;\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont: var(--mol_skin_font);\n\tbackground: var(--mol_skin_light);\n}\n\n[mol_view][mol_view_error]:not([mol_view_error=\"$mol_atom_wait\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t135deg,\n\t\trgba(255,220,220,1),\n\t\trgba(255,220,220,1) 11px,\n\t\trgba(255,255,220,1) 10px,\n\t\trgba(255,255,220,1) 20px\n\t);\n\tbackground-size: 28px 28px;\n\tcolor: black;\n}\n[mol_view][mol_view_error] * {\n\tbackground: none;\n}\n\n@keyframes mol_view_wait_show {\n\tfrom {\n\t\tbackground: none;\n\t}\n}\n\n@keyframes mol_view_wait_move {\n\tfrom {\n\t\tbackground-position: 0 0;\n\t}\n\tto {\n\t\tbackground-position: -28px 0;\n\t}\n}\n\n[mol_view][mol_view_error=\"$mol_atom_wait\"] {\n\t\tbackground-image: repeating-linear-gradient(\n\t\t45deg,\n\t\tcolor( var(--mol_skin_base) alpha(.05) ),\n\t\tcolor( var(--mol_skin_base) alpha(.05) ) 9px,\n\t\trgba(255,255,255,.015) 10px,\n\t\trgba(255,255,255,.015) 20px\n\t);\n\tbackground-size: 28px 28px;\n\tanimation: mol_view_wait_show .5s ease-in , mol_view_wait_move .25s steps(6) infinite;\n}\n\n[mol_view][mol_view_error=\"$mol_atom_wait\"] * {\n\t\tbackground: none;\n}\n",
+		"[mol_scroll] {\n\tdisplay: block;\n\toverflow: auto;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n\tbox-sizing: border-box;\n\twill-change: scroll-position;\n\ttransform: translateZ(0); /* enforce gpu scroll in all agents */\n\tbox-shadow: var(--mol_skin_light_outline);\n\tmax-height: 100%;\n\tmax-width: 100%;\n\t-webkit-overflow-scrolling: touch;\n}\n\n/* prevent large gpu layer */\n[mol_scroll][mol_scroll] {\n\tbackground: none;\n}\n\n[mol_scroll] > * {\n\ttransform: translateZ(0);\n}\n\n@media print {\n\t[mol_scroll] {\n\t\toverflow: visible;\n\t}\n}\n\n[mol_scroll_strut] {\n\tposition: absolute;\n\tdisplay: block;\n\tpadding: 1px;\n\tmargin: -1px;\n\tz-index: 0; \n\ttransition: none;\n}\n",
+		"[mol_list] {\n\twill-change: contents;\n\tdisplay: block;\n}\n"
+	]
+}

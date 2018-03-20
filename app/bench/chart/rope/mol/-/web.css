@@ -1,0 +1,210 @@
+[mol_view] {
+    transition-property: background-color, height, width, min-height, min-width, max-width, max-height, transform;
+    transition-duration: .2s;
+    -webkit-appearance: none;
+    word-break: break-word
+}
+[mol_view] > * {
+    word-break: inherit
+}
+[mol_view_root] {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    font: 1rem/1.5 "-apple-system", BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #fcfcfc
+}
+[mol_view][mol_view_error]:not([mol_view_error="$mol_atom_wait"]) {
+    background-image: repeating-linear-gradient(
+		135deg,
+		rgba(255, 220, 220, 1),
+		rgba(255, 220, 220, 1) 11px,
+		rgba(255, 255, 220, 1) 10px,
+		rgba(255, 255, 220, 1) 20px
+	);
+    background-size: 28px 28px;
+    color: black
+}
+[mol_view][mol_view_error] * {
+    background: none
+}
+@keyframes mol_view_wait_show {
+    from {
+        background: none
+    }
+}
+@keyframes mol_view_wait_move {
+    from {
+        background-position: 0 0
+    }
+    to {
+        background-position: -28px 0
+    }
+}
+[mol_view][mol_view_error="$mol_atom_wait"] {
+    background-image: repeating-linear-gradient(
+		45deg,
+		rgba(58, 140, 203, 0.05),
+		rgba(58, 140, 203, 0.05) 9px,
+		rgba(255, 255, 255, .015) 10px,
+		rgba(255, 255, 255, .015) 20px
+	);
+    background-size: 28px 28px;
+    animation: mol_view_wait_show .5s ease-in , mol_view_wait_move .25s steps(6) infinite
+}
+[mol_view][mol_view_error="$mol_atom_wait"] * {
+    background: none
+}
+[mol_svg_root] {
+    overflow: hidden
+}
+[mol_plot_pane] {
+    flex: 1 1 auto;
+    -ms-grid-row-align: stretch;
+        align-self: stretch;
+    stroke-width: 2px
+}
+[mol_scroll] {
+    display: block;
+    overflow: auto;
+    flex: 1 1 auto;
+    -ms-grid-row-align: stretch;
+        align-self: stretch;
+    box-sizing: border-box;
+    will-change: scroll-position;
+    transform: translateZ(0);
+    /* enforce gpu scroll in all agents */
+    box-shadow: 0 0 0 1px rgba(230, 230, 230, .75);
+    max-height: 100%;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch
+}
+/* prevent large gpu layer */
+[mol_scroll][mol_scroll] {
+    background: none
+}
+[mol_scroll] > * {
+    transform: translateZ(0)
+}
+@media print {
+    [mol_scroll] {
+        overflow: visible
+    }
+}
+[mol_scroll_strut] {
+    position: absolute;
+    display: block;
+    padding: 1px;
+    margin: -1px;
+    z-index: 0;
+    transition: none
+}
+[mol_chart_legend] {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding: .5rem;
+    margin: .5rem;
+    flex: 0 1 auto
+}
+[mol_chart_legend_graph_legend] {
+    display: flex;
+    justify-content: flex-start;
+    flex: 1 1 8rem;
+    padding: .5rem
+}
+[mol_chart_legend_graph_title] {
+    margin: 0 .25rem
+}
+[mol_chart_legend_graph_sample_box] {
+    position: relative;
+    width: 1.5rem;
+    flex: none
+}
+[mol_chart] {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 1 auto;
+    padding: .5rem
+}
+[mol_chart_plot] {
+    flex: 1 0 50%;
+    margin: .5rem
+}
+[mol_plot_graph] {
+    stroke: currentColor
+}
+[mol_plot_graph_sample] {
+    border-width: 0;
+    border-style: solid
+}
+[mol_plot_graph_type="dashed"] {
+    stroke-dasharray: 4 4;
+    border-style: dashed
+}
+[mol_svg_text] {
+    fill: currentColor;
+    stroke: none
+}
+[mol_plot_ruler_vert_curve] {
+    color: rgba(230, 230, 230, .75);
+    stroke-width: .1%;
+    stroke: currentColor
+}
+[mol_plot_ruler_vert_label] {
+    color: rgba(0, 0, 0, .9);
+    transform: translateY( 4px )
+}
+[mol_plot_ruler_vert_title] {
+    color: rgba(0, 0, 0, .5)
+}
+[mol_plot_ruler_hor_curve] {
+    color: rgba(230, 230, 230, .75);
+    stroke-width: .1%;
+    stroke: currentColor
+}
+[mol_plot_ruler_hor_label] {
+    color: rgba(0, 0, 0, .9);
+    transform: translateY( -4px )
+}
+[mol_plot_ruler_hor_title] {
+    color: rgba(0, 0, 0, .5);
+    transform: translateY( -4px )
+}
+[mol_plot_line] {
+    color: #3a8ccb;
+    fill: none;
+    stroke-linejoin: round
+}
+[mol_plot_line_sample] {
+    height: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-width: 2px 0 0;
+    position: absolute;
+    top: .75em;
+    transform: translateY(-50%)
+}
+[mol_plot_dot] {
+    color: #3a8ccb;
+    stroke-linecap: round
+}
+[mol_plot_dot_sample] {
+    width: .5rem;
+    height: .5rem;
+    border-radius: 1rem;
+    background: currentColor;
+    position: absolute;
+    top: .75em;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+[mol_app_bench_chart_rope_mol] {
+    display: flex
+}
+
+/*# sourceMappingURL=web.css.map */

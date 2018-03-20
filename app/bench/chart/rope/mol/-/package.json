@@ -1,0 +1,8 @@
+{
+  "name": "mol_app_bench_chart_rope_mol",
+  "version": "0.0.0",
+  "main": "node.js",
+  "dependencies": {
+    "jsdom": "*"
+  }
+}
